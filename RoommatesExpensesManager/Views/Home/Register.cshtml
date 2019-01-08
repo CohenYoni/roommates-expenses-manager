@@ -1,27 +1,39 @@
 ﻿@model RoommatesExpensesManager.Models.User
 
-<div id="3">
-    @using (Html.BeginForm("Register", "Home", FormMethod.Post, new { Class = "form-group" }))
+@{
+    ViewBag.Title = "הרשמה";
+}
+
+<div id="registerForm">
+    @using (Html.BeginForm("RegisterSubmit", "Home", FormMethod.Post, new { Class = "form-group" }))
     {
-        <label>שם משתמש</label>
-        @Html.TextBoxFor(m => m.UserName, new { Class = "form-control" })
+        <div>
+            <label>שם משתמש</label>
+            @Html.TextBoxFor(m => m.UserName, new { Class = "form-control" })
+            <div style="color:red">@Html.ValidationMessageFor(x => x.UserName)</div>
+        </div>
+
+        <div>
+            <label>סיסמה</label>
+            @Html.PasswordFor(m => m.Password, new { Class = "form-control" })
+            <div style="color:red">@Html.ValidationMessageFor(x => x.Password)</div>
+        </div>
+
+        <div>
+            <label>שם פרטי</label>
+            @Html.TextBoxFor(m => m.FirstName, new { Class = "form-control" })
+            <div style="color:red">@Html.ValidationMessageFor(x => x.LastName)</div>
+        </div>
+
+        <div>
+            <label>שם משפחה</label>
+            @Html.TextBoxFor(m => m.LastName, new { Class = "form-control" })
+            <div style="color:red">@Html.ValidationMessageFor(x => x.LastName)</div>
+        </div>
+        <div style="color:red">
+            @ViewBag.errorUserRegister
+        </div>
         <br />
-        @Html.ValidationMessageFor(x => x.UserName)
-        <br />
-        <label>סיסמה</label>
-        @Html.PasswordFor(m => m.Password, new { Class = "form-control" })
-        <br />
-        @Html.ValidationMessageFor(x => x.Password)
-        <br />
-        <label>שם פרטי</label>
-        @Html.TextBoxFor(m => m.FirstName, new { Class = "form-control" })
-        <br />
-        @Html.ValidationMessageFor(x => x.FirstName)
-        <br />
-        <label>שם משפחה</label>
-        @Html.TextBoxFor(m => m.LastName, new { Class = "form-control" })
-        <br />
-        @Html.ValidationMessageFor(x => x.LastName)
         <input class="btn btn-primary" id="register" type="submit" value="הרשמה" />
     }
 </div>

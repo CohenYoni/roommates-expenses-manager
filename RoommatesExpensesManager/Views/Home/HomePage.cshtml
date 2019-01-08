@@ -15,24 +15,24 @@
 <div id="loginForm">
     @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { Class = "form-group" }))
     {
-    <table>
-        <tr>
-            <td>שם משתמש</td>
-            <td>@Html.TextBoxFor(m => m.UserName, new { Class = "form-control" })</td>
-            <td>@Html.ValidationMessageFor(x => x.UserName)</td>
-        </tr>
-        <tr>
-            <td>סיסמה</td>
-            <td>@Html.PasswordFor(m => m.Password, new { Class = "form-control" })</td>
-            <td>@Html.ValidationMessageFor(x => x.Password)</td>
-        </tr>
-        <tr>
+        <div>
+            <label>שם משתמש</label>
+            @Html.TextBoxFor(m => m.UserName, new { Class = "form-control" })
+            <div style="color:red">@Html.ValidationMessageFor(x => x.UserName)</div>
+        </div>
+
+        <div>
+            <label>סיסמה</label>
+            @Html.PasswordFor(m => m.Password, new { Class = "form-control" })
+            <div style="color:red">@Html.ValidationMessageFor(x => x.Password)</div>
+        </div>
+        <div style="color:red">
             @ViewBag.errorUserLogin
-        </tr>
-    </table>
-    <input class="btn btn-primary" id="login" type="submit" value="התחברות" />
+        </div>
+        <br/>
+        <div class="input-group">
+            <input class="btn btn-primary" id="login" type="submit" value="התחברות" />
+            <input class="btn btn-primary" id="register" type="button" value="הרשמה" onclick="location.href='@Url.Action("Register", "Home")'" />
+        </div>
     }
-</div>
-<div id="registerButton">
-    <input class="btn btn-primary" id="register" type="button" value="הרשמה" onclick="location.href='@Url.Action("Register", "Home")'" />
 </div>

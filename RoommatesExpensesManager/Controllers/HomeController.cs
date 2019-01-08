@@ -54,11 +54,25 @@ namespace RoommatesExpensesManager.Controllers
         public ActionResult RegisterSubmit(User usr)
         {
             if (ModelState.IsValid)
-                return View("Register", usr);
+            {
+                UserDal usrDal = new UserDal();
+
+                User objUser = (from user in usrDal.Users
+                                where user.UserName == usr.UserName
+                                select user).FirstOrDefault<User>();
+                if (objUser != null)
+                {
+                    ViewBag.errorUserRegister = "שם המשתמש שבחרת קיים";
+                    return View("Register", usr);
+                }
+                usrDal.Users.Add(usr);
+                usrDal.SaveChanges();
+                return View("HomePage", usr);
+            }
             else
             {
                 usr.Password = "";
-                return View("HomePage", usr);
+                return View("Register", usr);
             }
         }
     }
