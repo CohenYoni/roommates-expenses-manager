@@ -1,0 +1,38 @@
+﻿@model RoommatesExpensesManager.Models.UserLogin
+
+@{
+    ViewBag.Title = "השותפים שלי!";
+}
+
+<script src="~/Scripts/jquery-3.3.1.js"></script >
+<script src= "~/Scripts/jquery.validate.js" ></script >
+<script src= "~/Scripts/jquery.validate.unobtrusive.js" ></script >
+
+<div id= "about" >
+    <h2>ברוכים הבאים לאתר שלנו!!!</h2>
+    -----כאן יבואו תמונות ומלל על האתר ומה שהוא עושה-----
+</div>
+<div id="loginForm">
+    @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { Class = "form-group" }))
+    {
+    <table>
+        <tr>
+            <td>שם משתמש</td>
+            <td>@Html.TextBoxFor(m => m.UserName, new { Class = "form-control" })</td>
+            <td>@Html.ValidationMessageFor(x => x.UserName)</td>
+        </tr>
+        <tr>
+            <td>סיסמה</td>
+            <td>@Html.PasswordFor(m => m.Password, new { Class = "form-control" })</td>
+            <td>@Html.ValidationMessageFor(x => x.Password)</td>
+        </tr>
+        <tr>
+            @ViewBag.errorUserLogin
+        </tr>
+    </table>
+    <input class="btn btn-primary" id="login" type="submit" value="התחברות" />
+    }
+</div>
+<div id="registerButton">
+    <input class="btn btn-primary" id="register" type="button" value="הרשמה" onclick="location.href='@Url.Action("Register", "Home")'" />
+</div>
