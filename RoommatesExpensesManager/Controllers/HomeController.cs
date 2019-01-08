@@ -23,16 +23,19 @@ namespace RoommatesExpensesManager.Controllers
             {
                 UserDal usrDal = new UserDal();
 
-                List<User> objUsers = (from user in usrDal.Users
+                User objUser = (from user in usrDal.Users
                                        where user.UserName == usr.UserName
-                                       select user).ToList<User>();
-                if (objUsers.Count == 0 || objUsers[0].Password != usr.Password)
+                                       select user).FirstOrDefault<User>();
+                if (objUser == null || objUser.Password != usr.Password)
                 {
                     ViewBag.errorUserLogin = "המשתמש או הסיסמה שגויים";
                     return View("HomePage", usr);
                 }
-                Session["CurrentUser"] = usr;
-                return RedirectToAction("ShowRoommatePage", "Roommate");
+                Session["CurrentUser"] = objUser;
+                if (objUser.IsManager)
+                    return RedirectToAction("ShowManagerPage", "Manager");
+                else
+                    return RedirectToAction("ShowRoommatePage", "Roommate");
             }
             else
             {
