@@ -14,6 +14,6 @@ namespace RoommatesExpensesManager.Models
         [Required(ErrorMessage = "שדה חובה")]
         [StringLength(20, ErrorMessage = "לכל היותר 20 תווים")]
         public string LastName   { get; set; }
-        public bool isManager { get; set; }
+        public bool IsManager { get; set; }
     }
 }
