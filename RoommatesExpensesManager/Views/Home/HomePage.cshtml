@@ -29,10 +29,11 @@
         <div style="color:red">
             @ViewBag.errorUserLogin
         </div>
-        <br/>
+        <br />
         <div class="input-group">
             <input class="btn btn-primary" id="login" type="submit" value="התחברות" />
             <input class="btn btn-primary" id="register" type="button" value="הרשמה" onclick="location.href='@Url.Action("Register", "Home")'" />
         </div>
+        <div style="color:green">@ViewBag.registerSuccessMsg</div>
     }
 </div>

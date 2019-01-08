@@ -67,6 +67,7 @@ namespace RoommatesExpensesManager.Controllers
                 }
                 usrDal.Users.Add(usr);
                 usrDal.SaveChanges();
+                ViewBag.registerSuccessMsg = "ההרשמה בוצעה בהצלחה!";
                 return View("HomePage", usr);
             }
             else
