@@ -12,8 +12,11 @@ namespace RoommatesExpensesManager.Models
     {
         [Key]
         public int gid { get; set; }
+        [Required (ErrorMessage = "שדה חובה")]
         public string city { get; set; }
+        [Required (ErrorMessage = "שדה חובה")]
         public string street { get; set; }
+        [Required(ErrorMessage = "שדה חובה")]
         public int aptNum { get; set; }
         public string managerUserName { get; set; }
     }
