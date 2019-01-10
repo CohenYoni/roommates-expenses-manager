@@ -90,7 +90,7 @@ namespace RoommatesExpensesManager.Controllers
                 }
                 catch (DbUpdateException e)
                 {
-                    ViewBag.addNewCategoryError = e.Message;
+                    ViewBag.addNewCategoryError = e.InnerException.Message;
                 }
             }
             List<Category> categories = ctgyDal.Categories.ToList<Category>();

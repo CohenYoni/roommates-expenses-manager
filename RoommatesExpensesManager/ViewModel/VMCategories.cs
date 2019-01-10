@@ -1,9 +1,10 @@
-﻿using System;
+﻿using RoommatesExpensesManager.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace RoommatesExpensesManager.Models
+namespace RoommatesExpensesManager.ViewModel
 {
     public class VMCategories
     {
