@@ -59,7 +59,7 @@ namespace RoommatesExpensesManager.Controllers
                 Amount = Convert.ToDouble(Request.Form["Amount"]),
                 Store = Request.Form["Store"],
                 Category = Request.Form["Category"],
-                referanceNum = Request.Form["referanceNum"],
+                referenceNum = Request.Form["referenceNum"],
                 Comment = Request.Form["Comment"],
                 expDate = Convert.ToDateTime(Request.Form["expDate"]),
                 EntryDate = DateTime.Now,
