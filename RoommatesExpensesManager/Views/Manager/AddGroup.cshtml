@@ -1,0 +1,53 @@
+﻿@model RoommatesExpensesManager.Models.VMGroups
+@using RoommatesExpensesManager.Models;
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+@{
+    ViewBag.Title = "AddGroup";
+}
+
+<h2>הוספת קבוצה חדשה</h2>
+
+
+@using (Html.BeginForm("addGroupSubmit", "Manager", FormMethod.Post, new { Class = "form-group" }))
+{
+    <div>
+        @*TODO: comboBox from Json post Office*@
+        <label>עיר</label>
+        @Html.TextBoxFor(m => m.Group.city, new { Class = "form-control" })
+        <div style="color:red">@Html.ValidationMessageFor(x => x.Group.city)</div>
+    </div>
+
+    <div>
+        <label>רחוב</label>
+        @Html.TextBoxFor(m => m.Group.street, new { Class = "form-control" })
+        <div style="color:red">@Html.ValidationMessageFor(x => x.Group.street)</div>
+    </div>
+
+    <div>
+        <label>מספר דירה</label>
+        @Html.TextBoxFor(m => m.Group.aptNum, new { Class = "form-control" })
+        <div style="color:red">@Html.ValidationMessageFor(x => x.Group.aptNum)</div>
+    </div>
+    <br />
+    <input class="btn btn-primary" id="addGroup" type="submit" value="הוספה" />
+}
+<br/>
+<table class="table">
+    <tr>
+        <td>עיר</td>
+        <td>רחוב</td>
+        <td>מספר דירה</td>
+    </tr>
+    @foreach(Group obj in Model.Groups)
+    {
+        <tr>
+            <td>@obj.city</td>
+            <td>@obj.street</td>
+            <td>@obj.aptNum</td>
+            <td>@obj.managerUserName</td>
+        </tr>
+    }
+</table>
