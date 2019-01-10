@@ -19,7 +19,7 @@ namespace RoommatesExpensesManager.Models
         public string Store { get; set; }
         [Required(ErrorMessage = "שדה חובה")]
         public string Category { get; set; }
-        public string referanceNum { get; set; }
+        public string referenceNum { get; set; }
         public string Comment { get; set; }
         
         public DateTime? expDate { get; set; }
