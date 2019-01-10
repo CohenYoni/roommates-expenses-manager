@@ -17,6 +17,7 @@ namespace RoommatesExpensesManager.Models
         [Required (ErrorMessage = "שדה חובה")]
         public string street { get; set; }
         [Required(ErrorMessage = "שדה חובה")]
+        [RegularExpression("^[0-9]+$", ErrorMessage = "מספר הדירה מורכב ממספרים בלבד")]
         public int aptNum { get; set; }
         public string managerUserName { get; set; }
     }
