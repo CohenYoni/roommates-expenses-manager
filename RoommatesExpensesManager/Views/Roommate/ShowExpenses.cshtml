@@ -7,45 +7,61 @@
 @{
     ViewBag.Title = "הצגת הוצאות";
 }
-
+<style>
+    li {
+        display: inline;
+    }
+</style>
 <h2>הוספת הוצאה חדשה</h2>
 
 <form id="addExpenseForm" method="post" action="AddExpenseSubmit" class="form-group">
     @*@using (Html.BeginForm("addGroupSubmit", "Manager", FormMethod.Post, new { Class = "form-group", id = "addCategoriesForm" }))
         {*@
-    <div>
-        <label>סכום</label>
-        @Html.TextBoxFor(m => m.Amount, new { Class = "form-control" })
-        <div style="color:red">@Html.ValidationMessageFor(x => x.Amount)</div>
-    </div>
-    <div>
-        <label>חנות</label>
-        @Html.TextBoxFor(m => m.Store, new { Class = "form-control" })
-        <div style="color:red">@Html.ValidationMessageFor(x => x.Store)</div>
-    </div>
-    <div>
-        <label>קטגוריה</label>
-        @Html.TextBoxFor(m => m.Category, new { Class = "form-control" })
-        <div style="color:red">@Html.ValidationMessageFor(x => x.Category)</div>
-    </div>
-    <div>
-        <label>מספר אסמכתא</label>
-        @Html.TextBoxFor(m => m.referenceNum, new { Class = "form-control" })
-        <div style="color:red">@Html.ValidationMessageFor(x => x.referenceNum)</div>
-    </div>
-    <div>
-        <label>הערות</label>
-        @Html.TextBoxFor(m => m.Comment, new { Class = "form-control" })
-        <div style="color:red">@Html.ValidationMessageFor(x => x.Comment)</div>
-    </div>
-    <div>
-        <label>תאריך תשלום</label>
-        @Html.TextBoxFor(m => m.expDate, new { Class = "form-control" })
-        <div style="color:red">@Html.ValidationMessageFor(x => x.expDate)</div>
-    </div>
+
+    <table class="table">
+        <tr>
+            <td>
+                <label>סכום</label>
+                @Html.TextBoxFor(m => m.Amount, new { Class = "form-control" })
+
+                <div style="color:red">@Html.ValidationMessageFor(x => x.Amount)</div>
+            </td>
+            <td>
+                <label>חנות</label>
+
+                @Html.TextBoxFor(m => m.Store, new { Class = "form-control" })
+
+                <div style="color:red">@Html.ValidationMessageFor(x => x.Store)</div>
+            </td>
+
+            <td >
+                <label>קטגוריה</label>
+                @Html.TextBoxFor(m => m.Category, new { Class = "form-control" })
+                <div style="color:red">@Html.ValidationMessageFor(x => x.Category)</div>
+            </td>
+        <td>
+            <label>מספר אסמכתא</label>
+            @Html.TextBoxFor(m => m.referenceNum, new { Class = "form-control" })
+            <div style="color:red">@Html.ValidationMessageFor(x => x.referenceNum)</div>
+        </td>
+
+
+        
+            <td>
+                <label>הערות</label>
+                @Html.TextBoxFor(m => m.Comment, new { Class = "form-control" })
+                <div style="color:red">@Html.ValidationMessageFor(x => x.Comment)</div>
+            </td>
+            <td>
+                <label>תאריך תשלום</label>
+                @Html.TextBoxFor(m => m.expDate, new { Class = "form-control" })
+                <div style="color:red">@Html.ValidationMessageFor(x => x.expDate)</div>
+            </td>
+        </tr>
+    </table>
     <br />
     <input class="btn btn-primary" id="addExspense" type="button" onclick="SendNewExpenese()" value="הוספה" />
-    <input class="btn btn-primary" id="addExspense" type="button" onclick="location.href='@Url.Action( "ShowRoommatePage","Roommate")'" value="סיום"/>
+    <input class="btn btn-primary" id="addExspense" type="button" onclick="location.href='@Url.Action( "ShowRoommatePage","Roommate")'" value="סיום" />
     @*}*@
 </form>
 
