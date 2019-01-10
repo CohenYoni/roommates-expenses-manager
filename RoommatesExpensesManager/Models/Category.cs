@@ -9,7 +9,6 @@ namespace RoommatesExpensesManager.Models
     public class Category
     {
         [Key]
-        public int cid { get; set; }
         [Required (ErrorMessage = "שדה חובה")]
         public string Type { get; set; }
     }
