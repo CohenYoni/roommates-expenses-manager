@@ -14,6 +14,6 @@ namespace RoommatesExpensesManager.Dal
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<GroupRoommate>().ToTable("groupRoommates");
         }
-        public DbSet<GroupRoommate> Groups { get; set; }
+        public DbSet<GroupRoommate> GroupsRoommates { get; set; }
     }
 }
