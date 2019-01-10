@@ -1,0 +1,107 @@
+﻿@model RoommatesExpensesManager.Models.Expense
+
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+@{
+    ViewBag.Title = "הצגת הוצאות";
+}
+
+<h2>הוספת הוצאה חדשה</h2>
+
+<form id="addExpenseForm" method="post" action="AddExpenseSubmit" class="form-group">
+    @*@using (Html.BeginForm("addGroupSubmit", "Manager", FormMethod.Post, new { Class = "form-group", id = "addCategoriesForm" }))
+        {*@
+    <div>
+        <label>סכום</label>
+        @Html.TextBoxFor(m => m.Amount, new { Class = "form-control" })
+        <div style="color:red">@Html.ValidationMessageFor(x => x.Amount)</div>
+    </div>
+    <div>
+        <label>חנות</label>
+        @Html.TextBoxFor(m => m.Store, new { Class = "form-control" })
+        <div style="color:red">@Html.ValidationMessageFor(x => x.Store)</div>
+    </div>
+    <div>
+        <label>קטגוריה</label>
+        @Html.TextBoxFor(m => m.Category, new { Class = "form-control" })
+        <div style="color:red">@Html.ValidationMessageFor(x => x.Category)</div>
+    </div>
+    <div>
+        <label>מספר אסמכתא</label>
+        @Html.TextBoxFor(m => m.referanceNum, new { Class = "form-control" })
+        <div style="color:red">@Html.ValidationMessageFor(x => x.referanceNum)</div>
+    </div>
+    <div>
+        <label>הערות</label>
+        @Html.TextBoxFor(m => m.Comment, new { Class = "form-control" })
+        <div style="color:red">@Html.ValidationMessageFor(x => x.Comment)</div>
+    </div>
+    <div>
+        <label>תאריך תשלום</label>
+        @Html.TextBoxFor(m => m.expDate, new { Class = "form-control" })
+        <div style="color:red">@Html.ValidationMessageFor(x => x.expDate)</div>
+    </div>
+    <br />
+    <input class="btn btn-primary" id="addExspense" type="button" onclick="SendNewExpenese()" value="הוספה" />
+    <input class="btn btn-primary" id="addExspense" type="button" onclick="location.href='@Url.Action( "ShowRoommatePage","Roommate")'" value="סיום"/>
+    @*}*@
+</form>
+
+
+
+
+
+<h2>הוצאות קבוצה</h2>
+
+
+<div style="color:red" id="loadStatus"></div>
+
+<table id="showExpensesTbl" class="table table-bordered table-responsive table-hover">
+    <tr>
+        <td>  מזהה הוצאה  </td>
+        <td>משתמש </td>
+        <td>סכום </td>
+        <td>חנות </td>
+        <td>קטגוריה </td>
+        <td>אסמכתא</td>
+        <td>תאריך תשלום </td>
+        <td>תאריך הוספה </td>
+        <td>הערות </td>
+        <td>קבוצה </td>
+    </tr>
+</table>
+
+<script>
+    $("#loadStatus").text("טוען הוצאות... אנא המתן");
+    $.post("GetExpensesByJson", null, BindDataToTable);
+
+    function BindDataToTable(expenseGroup) {
+        $("#showExpensesTbl").find("tr:gt(0)").remove();
+        var exspenseTable = $("#showExpensesTbl");
+        for (i = 0; i < expenseGroup.length; i++) {
+            var newRow = "<tr>" +
+                "<td>" + expenseGroup[i].eid + "</td>" +
+                "<td>" + expenseGroup[i].UserName + "</td>" +
+                "<td>" + expenseGroup[i].Amount + "</td>" +
+                "<td>" + expenseGroup[i].Store + "</td>" +
+                "<td>" + expenseGroup[i].Category + "</td>" +
+                "<td>" + expenseGroup[i].referanceNum + "</td>" +
+                "<td>" + ((Date)(expenseGroup[i].expDate)) + "</td>" +
+                "<td>" + (Date)(expenseGroup[i].EntryDate) + "</td>" +
+                "<td>" + expenseGroup[i].Comment + "</td>" +
+                "<td>" + expenseGroup[i].groupID + "</td>" +
+                "</tr>";
+            exspenseTable.append(newRow);
+        }
+        $("#loadStatus").text("");
+    }
+
+    function SendNewExpenese() {
+        var expenseFormData = $("#addExpenseForm").serialize();
+        $("#loadStatus").text("שומר הוצאה... אנא המתן");
+        $.post("SaveNewExpense", expenseFormData, BindDataToTable);
+        $("#Type").val("");
+    }
+</script>
