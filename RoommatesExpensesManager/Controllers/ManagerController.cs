@@ -94,7 +94,6 @@ namespace RoommatesExpensesManager.Controllers
             {
                 Type = Request.Form["Type"].ToString()
             };
-            object x = Request.Form["Type"];
             if (ModelState.IsValid)
             {
                 try
@@ -115,9 +114,53 @@ namespace RoommatesExpensesManager.Controllers
 
         public ActionResult AddUserToGroup()
         {
-            UserDal usrDal = new UserDal();
+            User u = (User)(Session["CurrentUser"]);
+            GroupDal groupd = new GroupDal();
+            List<Group> MyGroups = (from g in groupd.Groups
+                                    where g.managerUserName == u.UserName
+                                    select g).ToList<Group>();
+            VMGroups grp = new VMGroups() { Groups = MyGroups };
+            return View(grp);
+        }
 
-            return View();
+        public ActionResult ChooseUser(Group grp)
+        {
+            User u = (User)(Session["CurrentUser"]);
+            GroupRoommateDal grpRmtDal = new GroupRoommateDal();
+            List<string> userNamesAlreadyInGrp = (from usr in grpRmtDal.GroupsRoommates
+                                                  where usr.groupID == grp.gid
+                                                  select usr.userName).ToList<string>();
+            UserDal usrDal = new UserDal();
+            List<User> usrs = (from usr in usrDal.Users
+                                where usr.UserName != u.UserName
+                                && !userNamesAlreadyInGrp.Contains(usr.UserName)
+                               select usr).ToList<User>();
+            VMUsersGroup usrsGidVM = new VMUsersGroup()
+            {
+                group = grp,
+                users = usrs
+            };
+            return View(usrsGidVM);
+        }
+
+        public ActionResult SubmitChoosenUser(/*VMUsersGroup vmUsrGrp*/)
+        {
+            string usrs = Request.Form["users[]"].ToString();
+            Int32 grpID = (Int32)TempData["groupID"];
+            List<string> userNames = usrs.Split(',').ToList<string>();
+            GroupRoommateDal grpRmtDal = new GroupRoommateDal();
+            foreach (string usrName in userNames)
+            {
+                GroupRoommate newRec = new GroupRoommate()
+                {
+                    groupID = grpID,
+                    userName = usrName
+                };
+                grpRmtDal.GroupsRoommates.Add(newRec);
+            }
+            grpRmtDal.SaveChanges();
+            //TODO: add success message
+            return View("ShowManagerPage");
         }
     }
 }

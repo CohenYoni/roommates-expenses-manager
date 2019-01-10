@@ -1,0 +1,49 @@
+﻿@model RoommatesExpensesManager.ViewModel.VMUsersGroup
+@using RoommatesExpensesManager.Models
+
+@{
+    ViewBag.Title = "ChooseUser";
+}
+
+<h2>בחירת משתמש</h2>
+@{ TempData["groupID"] = Model.group.gid;}
+
+<table class="table table-bordered table-responsive table-hover">
+    <tr>
+        <td>מספר קבוצה</td>
+        <td>עיר</td>
+        <td>רחוב </td>
+        <td>מספר </td>
+    </tr>
+    <tr>
+        <td>@Model.group.gid</td>
+        <td>@Model.group.city</td>
+        <td>@Model.group.street</td>
+        <td>@Model.group.aptNum</td>
+    </tr>
+</table>
+
+
+@using (Html.BeginForm("SubmitChoosenUser", "Manager", FormMethod.Post))
+{
+    <table class="table table-bordered table-responsive table-hover">
+        <tr>
+            <td>שם משתמש</td>
+            <td>שם פרטי</td>
+            <td>שם משפחה</td>
+        </tr>
+        @foreach (User usr in Model.users)
+        {
+            <tr>
+                <td>@usr.UserName </td>
+                <td>@usr.FirstName </td>
+                <td>@usr.LastName </td>
+                <td>
+                    <input type="checkbox" name="users[]" value="@usr.UserName" />
+                    @*@Html.CheckBoxFor(usr.UserName)*@
+                </td>
+            </tr>
+        }
+    </table>
+    <input id="send" type="submit" value="הוסף" />
+}

@@ -1,0 +1,32 @@
+﻿@model RoommatesExpensesManager.ViewModel.VMGroups
+@using RoommatesExpensesManager.Models
+
+@{
+    ViewBag.Title = "הוספת משתמש";
+}
+
+<h2>הוספת משתמשים לקבוצה</h2>
+
+@using (Html.BeginForm("ChooseUser", "Manager", FormMethod.Post))
+{
+    <table class="table table-bordered table-responsive table-hover">
+        <tr>
+            <td>מזהה קבוצה</td>
+            <td>עיר </td>
+            <td>רחוב </td>
+            <td>מספר </td>
+        </tr>
+        @foreach (Group grp in Model.Groups)
+        {
+            <tr>
+                <td>@grp.gid </td>
+                <td>@grp.city </td>
+                <td>@grp.street </td>
+                <td>@grp.aptNum </td>
+                <td>
+                    @Html.ActionLink("בחר", "ChooseUser", grp)
+                </td>
+        </tr>
+    }
+    </table>
+}
