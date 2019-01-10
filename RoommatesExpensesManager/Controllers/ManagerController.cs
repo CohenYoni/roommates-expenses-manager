@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
+using RoommatesExpensesManager.ModelBinders;
 
 namespace RoommatesExpensesManager.Controllers
 {
@@ -29,27 +30,44 @@ namespace RoommatesExpensesManager.Controllers
             return View(groupsVM);
         }
 
-        public ActionResult AddGroupSubmit(Group grp)
+        public ActionResult AddGroupSubmit([ModelBinder(typeof(GroupBinder))] Group grp)
         {
-            //try use model binder
-            ModelState.Clear();
-            TryValidateModel(grp);
+            //ModelState.Clear();
+            //TryValidateModel(grp);
             VMGroups groupsVM = new VMGroups();
-            Group newGroup = new Group();
-            newGroup.city = Request.Form["Group.city"].ToString();
-            newGroup.street = Request.Form["Group.street"].ToString();
-            newGroup.aptNum = Int32.Parse(Request.Form["Group.aptNum"]);
+            //Group newGroup = new Group();
+            //newGroup.city = Request.Form["Group.city"].ToString();
+            //newGroup.street = Request.Form["Group.street"].ToString();
+            //newGroup.aptNum = Int32.Parse(Request.Form["Group.aptNum"]);
             GroupDal grpDal = new GroupDal();
             if (ModelState.IsValid)
             {
                 grp.managerUserName = ((User)(Session["CurrentUser"])).UserName;
                 grpDal.Groups.Add(grp);
-                grpDal.SaveChanges();
-                groupsVM.Group = new Group();
+                try
+                {
+                    grpDal.SaveChanges();
+                    groupsVM.Group = new Group();
+                    GroupRoommate grpRmt = new GroupRoommate()
+                    {
+                        groupID = grp.gid,
+                        userName = grp.managerUserName
+                    };
+                    GroupRoommateDal grpRmtDal = new GroupRoommateDal();
+                    grpRmtDal.GroupsRoommates.Add(grpRmt);
+                    grpRmtDal.SaveChanges();
+                }
+                catch (DbUpdateException)
+                {
+                    //show error message in client side
+                    TempData["addNewCategoryError"] = "התרחשה שגיאה בהוספת הקטגוריה";
+                    groupsVM.Group = grp;
+                }
             }
             else
             {
-                groupsVM.Group = newGroup;
+                //groupsVM.Group = newGroup;
+                groupsVM.Group = grp;
             }
             groupsVM.Groups = grpDal.Groups.ToList<Group>();
             return View("AddGroup", groupsVM);
@@ -61,16 +79,11 @@ namespace RoommatesExpensesManager.Controllers
             return View(ctgy);
         }
 
-        public ActionResult AddCategorySubmit()
-        {
-            return View("ShowManagerPage");
-        }
-
         public ActionResult GetCategoriesByJson()
         {
             CategoryDal ctgyDal = new CategoryDal();
             List<Category> categories = ctgyDal.Categories.ToList<Category>();
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
             return Json(categories, JsonRequestBehavior.AllowGet);
         }
 
@@ -89,13 +102,14 @@ namespace RoommatesExpensesManager.Controllers
                 ctgyDal.Categories.Add(newCategory);
                 ctgyDal.SaveChanges();
                 }
-                catch (DbUpdateException e)
+                catch (DbUpdateException)
                 {
-                    ViewBag.addNewCategoryError = e.InnerException.Message;
+                    //show error message in client side
+                    TempData["addNewCategoryError"] = "התרחשה שגיאה בהוספת הקטגוריה";
                 }
             }
             List<Category> categories = ctgyDal.Categories.ToList<Category>();
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
             return Json(categories, JsonRequestBehavior.AllowGet);
         }
 

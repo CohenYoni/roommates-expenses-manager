@@ -9,7 +9,7 @@
 
 <h2>הוספת קטגוריה חדשה</h2>
 
-<form id="addCategoriesForm" method="post" action="AddCategorySubmit" class="form-group">
+<form id="addCategoriesForm" class="form-group">
 @*@using (Html.BeginForm("addGroupSubmit", "Manager", FormMethod.Post, new { Class = "form-group", id = "addCategoriesForm" }))
 {*@
     <div>
@@ -19,7 +19,7 @@
     </div>
     <br />
     <input class="btn btn-primary" id="addCategory" type="button" onclick="SendNewCategory()" value="הוספה" />
-    <input class="btn btn-primary" id="addCategory" type="submit" value="סיום" />
+    <input class="btn btn-primary" id="addCategory" type="button" onclick="location.href='@Url.Action("ShowManagerPage", "Manager")'" value="סיום" />
 @*}*@
 </form>
 
@@ -30,6 +30,8 @@
         <td><u><b>קטגוריות</b></u></td>
     </tr>
 </table>
+
+<div style="color:red"> @TempData["addNewCategoryError"] </div>
 
 <script>
     $("#loadStatus").text("טוען קטגוריות... אנא המתן");

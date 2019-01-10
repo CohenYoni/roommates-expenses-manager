@@ -1,10 +1,12 @@
-﻿@model RoommatesExpensesManager.Models.VMGroups
+﻿@model RoommatesExpensesManager.ViewModel.VMGroups
 @using RoommatesExpensesManager.Models;
 <script src="~/Scripts/jquery-3.3.1.js"></script>
 <script src="~/Scripts/jquery.validate.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 
 @{
+    /**/
+
     ViewBag.Title = "AddGroup";
 }
 
@@ -33,21 +35,43 @@
     </div>
     <br />
     <input class="btn btn-primary" id="addGroup" type="submit" value="הוספה" />
+    <input class="btn btn-primary" id="addCategory" type="button" onclick="location.href='@Url.Action("ShowManagerPage", "Manager")'" value="סיום" />
 }
-<br/>
-<table class="table">
+<br />
+@*<table class="table">
     <tr>
+        <td>מספר קבוצה</td>
         <td>עיר</td>
         <td>רחוב</td>
         <td>מספר דירה</td>
+        <td>מנהל</td>
     </tr>
-    @foreach(Group obj in Model.Groups)
+    @foreach (Group obj in Model.Groups)
     {
         <tr>
+            <td>@obj.gid</td>
             <td>@obj.city</td>
             <td>@obj.street</td>
             <td>@obj.aptNum</td>
             <td>@obj.managerUserName</td>
         </tr>
     }
-</table>
+</table>*@
+
+@{ 
+    WebGrid groups = new WebGrid(Model.Groups, rowsPerPage:5);
+}
+@groups.GetHtml(
+    tableStyle: "table table-bordered table-responsive table-hover",
+    //headerStyle: "header",
+    //rowStyle: "row",
+    //footerStyle: "footer",
+    //alternatingRowStyle: "altRow",
+    columns: groups.Columns(
+        groups.Column("gid", "מספר קבוצה"),
+        groups.Column("city", "עיר"),
+        groups.Column("street", "רחוב"),
+        groups.Column("aptNum", "מספר דירה"),
+        groups.Column("managerUserName", "מנהל")
+    )
+)
