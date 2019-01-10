@@ -1,35 +1,8 @@
-﻿@model RoommatesExpensesManager.Models.VMUserGroups
-@using RoommatesExpensesManager.Models;
+﻿@model RoommatesExpensesManager.ViewModel.VMGroups
 
 @{
-    ViewBag.Title = "פרטי קבוצות";
+    ViewBag.Title = "ShowRoommatePage";
 }
 
-
-
-    <span style="color:blue"> Groups </span>
-    <br />
-    <table class="table table-bordered table-responsive table-hover">
-        <tr>
-            <td> <span style="color:blue"> מזהה קבוצה </span> </td>
-            <td>מנהל </td>
-            <td>עיר </td>
-            <td>רחוב </td>
-            <td>מספר </td>
-            <td>צפיה בהוצאות</td>
-        </tr>
-        @foreach (Group obj in Model.MyGroups)
-        {
-            <tr>
-                <td>@obj.gid </td>
-                <td>@obj.managerUserName </td>
-                <td>@obj.city </td>
-                <td>@obj.street </td>
-                <td>@obj.aptNum </td>
-                <td><input id="Button1" type="button" value="פרטי קבוצה @obj.gid " /> </td>
-                
-            </tr>
-        }
-    </table>
-
+@Html.Partial("ShowGroups", Model)
 
