@@ -108,6 +108,11 @@ function SendNewExpenese() {
     var expenseFormData = $("#addExpenseForm").serialize();
     $("#loadStatus").text("שומר הוצאה... אנא המתן");
     $.post("SaveNewExpense", expenseFormData, BindDataToTable);
-    $("#Type").val("");
+    $("#Amount").val("");
+    $("#Store").val("");
+    $("#categoryDD").val('בחר קטגוריה');
+    $("#referenceNum").val("");
+    $("#expDate").val("");
+    $("#Comment").val("");
 }
 </script>
