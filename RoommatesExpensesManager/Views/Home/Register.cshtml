@@ -1,4 +1,4 @@
-﻿@model RoommatesExpensesManager.Models.User
+﻿@model RoommatesExpensesManager.ViewModel.VMUserRegister
 
 @{
     ViewBag.Title = "הרשמה";
@@ -9,8 +9,8 @@
     {
         <div>
             <label>שם משתמש</label>
-            @Html.TextBoxFor(m => m.UserName, new { Class = "form-control" })
-            <div style="color:red">@Html.ValidationMessageFor(x => x.UserName)</div>
+            @Html.TextBoxFor(m => m.NewUser.UserName, new { Class = "form-control" })
+            <div style="color:red">@Html.ValidationMessageFor(x => x.NewUser.UserName)</div>
         </div>
 
         <div>
@@ -20,15 +20,21 @@
         </div>
 
         <div>
+            <label>אשר סיסמה</label>
+            @Html.PasswordFor(m => m.ConfirmPassword, new { Class = "form-control" })
+            <div style="color:red">@Html.ValidationMessageFor(x => x.ConfirmPassword)</div>
+        </div>
+
+        <div>
             <label>שם פרטי</label>
-            @Html.TextBoxFor(m => m.FirstName, new { Class = "form-control" })
-            <div style="color:red">@Html.ValidationMessageFor(x => x.LastName)</div>
+            @Html.TextBoxFor(m => m.NewUser.FirstName, new { Class = "form-control" })
+            <div style="color:red">@Html.ValidationMessageFor(x => x.NewUser.LastName)</div>
         </div>
 
         <div>
             <label>שם משפחה</label>
-            @Html.TextBoxFor(m => m.LastName, new { Class = "form-control" })
-            <div style="color:red">@Html.ValidationMessageFor(x => x.LastName)</div>
+            @Html.TextBoxFor(m => m.NewUser.LastName, new { Class = "form-control" })
+            <div style="color:red">@Html.ValidationMessageFor(x => x.NewUser.LastName)</div>
         </div>
         <div style="color:red">
             @ViewBag.errorUserRegister

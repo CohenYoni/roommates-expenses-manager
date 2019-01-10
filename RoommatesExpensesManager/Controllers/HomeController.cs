@@ -1,5 +1,6 @@
 ﻿using RoommatesExpensesManager.Dal;
 using RoommatesExpensesManager.Models;
+using RoommatesExpensesManager.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,29 +47,31 @@ namespace RoommatesExpensesManager.Controllers
 
         public ActionResult Register()
         {
-            User newUsr = new User();
+            VMUserRegister newUsr = new VMUserRegister();
+            newUsr.NewUser = new User();
             return View(newUsr);
         }
 
         [HttpPost]
-        public ActionResult RegisterSubmit(User usr)
+        public ActionResult RegisterSubmit(VMUserRegister usr)
         {
             if (ModelState.IsValid)
             {
                 UserDal usrDal = new UserDal();
 
                 User objUser = (from user in usrDal.Users
-                                where user.UserName == usr.UserName
+                                where user.UserName == usr.NewUser.UserName
                                 select user).FirstOrDefault<User>();
                 if (objUser != null)
                 {
                     ViewBag.errorUserRegister = "שם המשתמש שבחרת קיים";
                     return View("Register", usr);
                 }
-                usrDal.Users.Add(usr);
+                usr.NewUser.Password = usr.Password;
+                usrDal.Users.Add(usr.NewUser);
                 usrDal.SaveChanges();
                 ViewBag.registerSuccessMsg = "ההרשמה בוצעה בהצלחה!";
-                return View("HomePage", usr);
+                return View("HomePage", usr.NewUser);
             }
             else
             {
