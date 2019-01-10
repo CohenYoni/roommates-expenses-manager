@@ -3,50 +3,35 @@
 <script src="~/Scripts/jquery-3.3.1.js"></script>
 <script src="~/Scripts/jquery.validate.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-
 @{
     ViewBag.Title = "הצגת הוצאות";
 }
-<style>
-    li {
-        display: inline;
-    }
-</style>
+
 <h2>הוספת הוצאה חדשה</h2>
 
 <form id="addExpenseForm" method="post" action="AddExpenseSubmit" class="form-group">
-    @*@using (Html.BeginForm("addGroupSubmit", "Manager", FormMethod.Post, new { Class = "form-group", id = "addCategoriesForm" }))
-        {*@
-
-    <table class="table">
+    <table class="table" id="tableForm">
         <tr>
             <td>
                 <label>סכום</label>
                 @Html.TextBoxFor(m => m.Amount, new { Class = "form-control" })
-
                 <div style="color:red">@Html.ValidationMessageFor(x => x.Amount)</div>
             </td>
             <td>
                 <label>חנות</label>
-
                 @Html.TextBoxFor(m => m.Store, new { Class = "form-control" })
-
                 <div style="color:red">@Html.ValidationMessageFor(x => x.Store)</div>
             </td>
-
-            <td >
+            <td>
                 <label>קטגוריה</label>
-                @Html.TextBoxFor(m => m.Category, new { Class = "form-control" })
-                <div style="color:red">@Html.ValidationMessageFor(x => x.Category)</div>
+                <select id="categoryDD" name="categoryCombo"></select>
+                <div style="color:red" id="loadStatuss"></div>
             </td>
-        <td>
-            <label>מספר אסמכתא</label>
-            @Html.TextBoxFor(m => m.referenceNum, new { Class = "form-control" })
-            <div style="color:red">@Html.ValidationMessageFor(x => x.referenceNum)</div>
-        </td>
-
-
-        
+            <td>
+                <label>מספר אסמכתא</label>
+                @Html.TextBoxFor(m => m.referenceNum, new { Class = "form-control" })
+                <div style="color:red">@Html.ValidationMessageFor(x => x.referenceNum)</div>
+            </td>
             <td>
                 <label>הערות</label>
                 @Html.TextBoxFor(m => m.Comment, new { Class = "form-control" })
@@ -62,21 +47,26 @@
     <br />
     <input class="btn btn-primary" id="addExspense" type="button" onclick="SendNewExpenese()" value="הוספה" />
     <input class="btn btn-primary" id="addExspense" type="button" onclick="location.href='@Url.Action( "ShowRoommatePage","Roommate")'" value="סיום" />
-    @*}*@
 </form>
 
-
-
-
+<script>
+    var categoryDropDown = $('#categoryDD');
+    categoryDropDown.empty();
+    categoryDropDown.append('<option selected="true" disabled>בחר קטגוריה</option>');
+    $("#loadStatuss").text("טוען קטגוריות... אנא המתן");
+    $.getJSON("GetCategoriesByJson", function (categories) {
+        for (i = 0; i < categories.length; i++) {
+            categoryDropDown.append($('<option></option>').attr('value', categories[i].Type).text(categories[i].Type));
+        }
+    $("#loadStatuss").text("");
+    });
+</script>
 
 <h2>הוצאות קבוצה</h2>
-
-
 <div style="color:red" id="loadStatus"></div>
-
 <table id="showExpensesTbl" class="table table-bordered table-responsive table-hover">
     <tr>
-        <td>  מזהה הוצאה  </td>
+        <td>מזהה הוצאה</td>
         <td>משתמש </td>
         <td>סכום </td>
         <td>חנות </td>
@@ -95,29 +85,29 @@
 
     function BindDataToTable(expenseGroup) {
         $("#showExpensesTbl").find("tr:gt(0)").remove();
-        var exspenseTable = $("#showExpensesTbl");
-        for (i = 0; i < expenseGroup.length; i++) {
-            var newRow = "<tr>" +
-                "<td>" + expenseGroup[i].eid + "</td>" +
-                "<td>" + expenseGroup[i].UserName + "</td>" +
-                "<td>" + expenseGroup[i].Amount + "</td>" +
-                "<td>" + expenseGroup[i].Store + "</td>" +
-                "<td>" + expenseGroup[i].Category + "</td>" +
-                "<td>" + expenseGroup[i].referanceNum + "</td>" +
-                "<td>" + ((Date)(expenseGroup[i].expDate)) + "</td>" +
-                "<td>" + (Date)(expenseGroup[i].EntryDate) + "</td>" +
-                "<td>" + expenseGroup[i].Comment + "</td>" +
-                "<td>" + expenseGroup[i].groupID + "</td>" +
-                "</tr>";
-            exspenseTable.append(newRow);
-        }
-        $("#loadStatus").text("");
+    var exspenseTable = $("#showExpensesTbl");
+    for (i = 0; i < expenseGroup.length; i++) {
+        var newRow = "<tr>" +
+        "<td>" + expenseGroup[i].eid + "</td>" +
+        "<td>" + expenseGroup[i].UserName + "</td>" +
+        "<td>" + expenseGroup[i].Amount + "</td>" +
+        "<td>" + expenseGroup[i].Store + "</td>" +
+        "<td>" + expenseGroup[i].Category + "</td>" +
+        "<td>" + expenseGroup[i].referenceNum + "</td>" +
+        "<td>" + new Date(parseInt(expenseGroup[i].expDate.substr(6))) + "</td>" +
+        "<td>" + new Date(parseInt(expenseGroup[i].EntryDate.substr(6)))+ "</td>" +
+        "<td>" + expenseGroup[i].Comment + "</td>" +
+        "<td>" + expenseGroup[i].groupID + "</td>" +
+        "</tr>";
+        exspenseTable.append(newRow);
     }
+    $("#loadStatus").text("");
+}
 
-    function SendNewExpenese() {
-        var expenseFormData = $("#addExpenseForm").serialize();
-        $("#loadStatus").text("שומר הוצאה... אנא המתן");
-        $.post("SaveNewExpense", expenseFormData, BindDataToTable);
-        $("#Type").val("");
-    }
+function SendNewExpenese() {
+    var expenseFormData = $("#addExpenseForm").serialize();
+    $("#loadStatus").text("שומר הוצאה... אנא המתן");
+    $.post("SaveNewExpense", expenseFormData, BindDataToTable);
+    $("#Type").val("");
+}
 </script>

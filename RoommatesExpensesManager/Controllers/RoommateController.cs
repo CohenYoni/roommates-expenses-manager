@@ -58,7 +58,7 @@ namespace RoommatesExpensesManager.Controllers
                 UserName = ((User)(Session["CurrentUser"])).UserName,
                 Amount = Convert.ToDouble(Request.Form["Amount"]),
                 Store = Request.Form["Store"],
-                Category = Request.Form["Category"],
+                Category = Request.Form["categoryCombo"],
                 referenceNum = Request.Form["referenceNum"],
                 Comment = Request.Form["Comment"],
                 expDate = Convert.ToDateTime(Request.Form["expDate"]),
@@ -83,7 +83,10 @@ namespace RoommatesExpensesManager.Controllers
             return Json(expenses, JsonRequestBehavior.AllowGet);
         }
 
-
+        public ActionResult GetCategoriesByJson()
+        {
+            return RedirectToAction("GetCategoriesByJson", "Manager");
+        }
 
     }
 }
