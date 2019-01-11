@@ -170,21 +170,34 @@ namespace RoommatesExpensesManager.Controllers
 
         public ActionResult SubmitChoosenUser(VMUsersGroup vmUsrGrp)
         {
+            string usrs;
             if (!Authorize())
                 return RedirectToAction("RedirectByUser", "Home");
-            string usrs = Request.Form["users[]"].ToString();
             Int32 grpID = (Int32)TempData["groupID"];
+            if (Request.Form["users[]"] != null)
+            {
+                usrs = Request.Form["users[]"].ToString();
+            }
+            else
+            {
+                ViewBag.erorAddUser = "לא התווסף משתמש";
+                GroupDal grpDal = new GroupDal();
+                Group grp = (from g in grpDal.Groups
+                             where g.gid == grpID
+                             select g).First<Group>();
+                return RedirectToAction("ChooseUser",grp);
+            }
             List<string> userNames = usrs.Split(',').ToList<string>();
             GroupRoommateDal grpRmtDal = new GroupRoommateDal();
             foreach (string usrName in userNames)
-            {
-                GroupRoommate newRec = new GroupRoommate()
                 {
-                    groupID = grpID,
-                    userName = usrName
-                };
-                grpRmtDal.GroupsRoommates.Add(newRec);
-            }
+                    GroupRoommate newRec = new GroupRoommate()
+                    {
+                        groupID = grpID,
+                        userName = usrName
+                    };
+                    grpRmtDal.GroupsRoommates.Add(newRec);
+                }
             grpRmtDal.SaveChanges();
             //TODO: add success message
             return View("ShowManagerPage");
