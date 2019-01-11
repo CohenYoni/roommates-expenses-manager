@@ -27,6 +27,7 @@ namespace RoommatesExpensesManager.Controllers
                 return RedirectToAction("HomePage");
             }
         }
+
         public ActionResult HomePage()
         {
             if (Session["CurrentUser"] != null)
@@ -102,6 +103,13 @@ namespace RoommatesExpensesManager.Controllers
                 usr.Password = "";
                 return View("Register", usr);
             }
+        }
+
+        public ActionResult Logout()
+        {
+            if (Session["CurrentUser"] != null)
+                Session.Remove("CurrentUser");
+            return RedirectToAction("HomePage");
         }
     }
 }
