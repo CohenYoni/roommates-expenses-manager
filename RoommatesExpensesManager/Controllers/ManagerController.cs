@@ -98,7 +98,7 @@ namespace RoommatesExpensesManager.Controllers
 
         public ActionResult GetCategoriesByJson()
         {
-            if (!Authorize())
+            if (Session["CurrentUser"] == null)
                 return RedirectToAction("RedirectByUser", "Home");
             CategoryDal ctgyDal = new CategoryDal();
             List<Category> categories = ctgyDal.Categories.ToList<Category>();

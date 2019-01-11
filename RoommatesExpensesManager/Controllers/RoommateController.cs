@@ -97,6 +97,8 @@ namespace RoommatesExpensesManager.Controllers
 
         public ActionResult GetCategoriesByJson()
         {
+            if (!Authorize())
+                return RedirectToAction("RedirectByUser", "Home");
             return RedirectToAction("GetCategoriesByJson", "Manager");
         }
     }
