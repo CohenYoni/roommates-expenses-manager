@@ -47,14 +47,10 @@ namespace RoommatesExpensesManager.Controllers
         {
             if (!Authorize())
                 return RedirectToAction("RedirectByUser", "Home");
-            //ModelState.Clear();
-            //TryValidateModel(grp);
             VMGroups groupsVM = new VMGroups();
-            //Group newGroup = new Group();
-            //newGroup.city = Request.Form["Group.city"].ToString();
-            //newGroup.street = Request.Form["Group.street"].ToString();
-            //newGroup.aptNum = Int32.Parse(Request.Form["Group.aptNum"]);
             GroupDal grpDal = new GroupDal();
+            ModelState.Clear();
+            TryValidateModel(grp);
             if (ModelState.IsValid)
             {
                 grp.managerUserName = ((User)(Session["CurrentUser"])).UserName;
@@ -75,7 +71,7 @@ namespace RoommatesExpensesManager.Controllers
                 catch (DbUpdateException)
                 {
                     //show error message in client side
-                    TempData["addNewCategoryError"] = "התרחשה שגיאה בהוספת הקטגוריה";
+                    ViewBag.addNewCategoryError = "התרחשה שגיאה בהוספת הקבוצה";
                     groupsVM.Group = grp;
                 }
             }
@@ -125,7 +121,7 @@ namespace RoommatesExpensesManager.Controllers
                 catch (DbUpdateException)
                 {
                     //show error message in client side
-                    TempData["addNewCategoryError"] = "התרחשה שגיאה בהוספת הקטגוריה";
+                    ViewBag.addNewCategoryError = "התרחשה שגיאה בהוספת הקטגוריה";
                 }
             }
             List<Category> categories = ctgyDal.Categories.ToList<Category>();

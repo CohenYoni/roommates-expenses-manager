@@ -13,8 +13,12 @@ namespace RoommatesExpensesManager.ModelBinders
         {
             HttpContextBase objContext = controllerContext.HttpContext;
             string groupCity = objContext.Request.Form["Group.city"];
-            string groupStreet = objContext.Request.Form["Group.street"].ToString();
-            int groupAptNum = Int32.Parse(objContext.Request.Form["Group.aptNum"]);
+            string groupStreet = objContext.Request.Form["Group.street"];
+            string aptNumString = objContext.Request.Form["Group.aptNum"];
+            //int? groupAptNum = aptNumString == "" ? null : (Int32)aptNumString;
+            int? groupAptNum = null;
+            if (aptNumString != null)
+                groupAptNum = Int32.Parse(aptNumString);
 
             Group obj = new Group()
             {
