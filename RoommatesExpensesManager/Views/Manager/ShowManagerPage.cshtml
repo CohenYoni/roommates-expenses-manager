@@ -1,9 +1,11 @@
-﻿
+﻿@using RoommatesExpensesManager.Models
+
 @{
     ViewBag.Title = "דף ניהול";
 }
 
 <h2>ניהול</h2>
+<h4>שלום @(((User)(Session["CurrentUser"])).FirstName)</h4>
 <div class="row">
     <div class="col-sm-offset-8">
         <button id="showGroups" class="btn btn-primary btn-block btn-lg" type="button" onclick="location.href='@Url.Action("ShowRoommatePage", "Roommate")'">הצג את כל הקבוצות</button>

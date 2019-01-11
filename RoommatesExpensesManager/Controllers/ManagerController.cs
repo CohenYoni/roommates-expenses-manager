@@ -14,13 +14,26 @@ namespace RoommatesExpensesManager.Controllers
 {
     public class ManagerController : Controller
     {
+        private bool Authorize()
+        {
+            if (Session["CurrentUser"] == null ||
+                (Session["CurrentUser"] != null && !((User)Session["CurrentUser"]).IsManager))
+                return false;
+            else
+                return true;
+        }
+
         public ActionResult ShowManagerPage()
         {
+            if (!Authorize())
+                return RedirectToAction("RedirectByUser", "Home");
             return View();
         }
 
         public ActionResult AddGroup()
         {
+            if (!Authorize())
+                return RedirectToAction("RedirectByUser", "Home");
             GroupDal grpDal = new GroupDal();
             VMGroups groupsVM = new VMGroups
             {
@@ -32,6 +45,8 @@ namespace RoommatesExpensesManager.Controllers
 
         public ActionResult AddGroupSubmit([ModelBinder(typeof(GroupBinder))] Group grp)
         {
+            if (!Authorize())
+                return RedirectToAction("RedirectByUser", "Home");
             //ModelState.Clear();
             //TryValidateModel(grp);
             VMGroups groupsVM = new VMGroups();
@@ -75,12 +90,16 @@ namespace RoommatesExpensesManager.Controllers
 
         public ActionResult AddCategory()
         {
+            if (!Authorize())
+                return RedirectToAction("RedirectByUser", "Home");
             Category ctgy = new Category();
             return View(ctgy);
         }
 
         public ActionResult GetCategoriesByJson()
         {
+            if (!Authorize())
+                return RedirectToAction("RedirectByUser", "Home");
             CategoryDal ctgyDal = new CategoryDal();
             List<Category> categories = ctgyDal.Categories.ToList<Category>();
             Thread.Sleep(1000);
@@ -89,6 +108,8 @@ namespace RoommatesExpensesManager.Controllers
 
         public ActionResult SaveNewCategory()
         {
+            if (!Authorize())
+                return RedirectToAction("RedirectByUser", "Home");
             CategoryDal ctgyDal = new CategoryDal();
             Category newCategory = new Category
             {
@@ -114,6 +135,8 @@ namespace RoommatesExpensesManager.Controllers
 
         public ActionResult AddUserToGroup()
         {
+            if (!Authorize())
+                return RedirectToAction("RedirectByUser", "Home");
             User u = (User)(Session["CurrentUser"]);
             GroupDal groupd = new GroupDal();
             List<Group> MyGroups = (from g in groupd.Groups
@@ -125,6 +148,8 @@ namespace RoommatesExpensesManager.Controllers
 
         public ActionResult ChooseUser(Group grp)
         {
+            if (!Authorize())
+                return RedirectToAction("RedirectByUser", "Home");
             User u = (User)(Session["CurrentUser"]);
             GroupRoommateDal grpRmtDal = new GroupRoommateDal();
             List<string> userNamesAlreadyInGrp = (from usr in grpRmtDal.GroupsRoommates
@@ -143,8 +168,10 @@ namespace RoommatesExpensesManager.Controllers
             return View(usrsGidVM);
         }
 
-        public ActionResult SubmitChoosenUser(/*VMUsersGroup vmUsrGrp*/)
+        public ActionResult SubmitChoosenUser(VMUsersGroup vmUsrGrp)
         {
+            if (!Authorize())
+                return RedirectToAction("RedirectByUser", "Home");
             string usrs = Request.Form["users[]"].ToString();
             Int32 grpID = (Int32)TempData["groupID"];
             List<string> userNames = usrs.Split(',').ToList<string>();

@@ -13,11 +13,19 @@ namespace RoommatesExpensesManager.Controllers
 {
     public class RoommateController : Controller
     {
+        private bool Authorize()
+        {
+            if (Session["CurrentUser"] == null)
+                return false;
+            else
+                return true;
+        }
 
         public ActionResult ShowRoommatePage()
         {
+            if(!Authorize())
+                return RedirectToAction("RedirectByUser", "Home");
             Session.Remove("gid");
-
             User u = (User)(Session["CurrentUser"]);
             GroupRoommateDal gdal = new GroupRoommateDal();
             List<int> gids = (from g in gdal.GroupsRoommates
@@ -28,30 +36,35 @@ namespace RoommatesExpensesManager.Controllers
                                     where gids.Contains(g.gid)
                                     select g).ToList<Group>();
             VMGroups grp = new VMGroups() { Groups = MyGroups };
-
             return View(grp);
         }
+
         public ActionResult ShowExpenses(int gid)
         {
+            if (!Authorize())
+                return RedirectToAction("RedirectByUser", "Home");
             Expense exp = new Expense();
             Session["gid"] = gid;
             return View(exp);
         }
 
-
         public ActionResult GetExpensesByJson()
         {
+            if (!Authorize())
+                return RedirectToAction("RedirectByUser", "Home");
             int gid = (int)Session["gid"];
             ExpenseDal expDal = new ExpenseDal();
             List<Expense> expenseGroup = (from e in expDal.Expenses
                                           where e.groupID == gid
                                           select e).ToList<Expense>();
-
             Thread.Sleep(2000);
             return Json(expenseGroup, JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult SaveNewExpense()
         {
+            if (!Authorize())
+                return RedirectToAction("RedirectByUser", "Home");
             ExpenseDal expDal = new ExpenseDal();
             Expense newExpense = new Expense()
             {
@@ -65,7 +78,6 @@ namespace RoommatesExpensesManager.Controllers
                 EntryDate = DateTime.Now,
                 groupID = ((Int32)(Session["gid"]))
             };
-
             if (ModelState.IsValid)
             {
                 try
@@ -85,8 +97,9 @@ namespace RoommatesExpensesManager.Controllers
 
         public ActionResult GetCategoriesByJson()
         {
+            if (!Authorize())
+                return RedirectToAction("RedirectByUser", "Home");
             return RedirectToAction("GetCategoriesByJson", "Manager");
         }
-
     }
 }

@@ -1,8 +1,11 @@
 ﻿@model RoommatesExpensesManager.ViewModel.VMGroups
+@using RoommatesExpensesManager.Models
 
 @{
     ViewBag.Title = "ShowRoommatePage";
 }
+
+<h4>שלום @(((User)(Session["CurrentUser"])).FirstName)</h4>
 
 @Html.Partial("ShowGroups", Model)
 

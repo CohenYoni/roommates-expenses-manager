@@ -4,11 +4,11 @@
     ViewBag.Title = "השותפים שלי!";
 }
 
-<script src="~/Scripts/jquery-3.3.1.js"></script >
-<script src= "~/Scripts/jquery.validate.js" ></script >
-<script src= "~/Scripts/jquery.validate.unobtrusive.js" ></script >
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 
-<div id= "about" >
+<div id="about">
     <h2>ברוכים הבאים לאתר שלנו!!!</h2>
     -----כאן יבואו תמונות ומלל על האתר ומה שהוא עושה-----
 </div>
@@ -37,3 +37,4 @@
         <div style="color:green">@ViewBag.registerSuccessMsg</div>
     }
 </div>
+<div style="color:red">@TempData["notAuthorized"]</div>
