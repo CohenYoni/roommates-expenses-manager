@@ -66,18 +66,25 @@ namespace RoommatesExpensesManager.Controllers
             if (!Authorize())
                 return RedirectToAction("RedirectByUser", "Home");
             ExpenseDal expDal = new ExpenseDal();
-            Expense newExpense = new Expense()
+            Expense newExpense = new Expense();
+            try
             {
-                UserName = ((User)(Session["CurrentUser"])).UserName,
-                Amount = Convert.ToDouble(Request.Form["Amount"]),
-                Store = Request.Form["Store"],
-                Category = Request.Form["categoryCombo"],
-                referenceNum = Request.Form["referenceNum"],
-                Comment = Request.Form["Comment"],
-                expDate = Convert.ToDateTime(Request.Form["expDate"]),
-                EntryDate = DateTime.Now,
-                groupID = ((Int32)(Session["gid"]))
-            };
+                newExpense.UserName = ((User)(Session["CurrentUser"])).UserName;
+                newExpense.Amount = Convert.ToDouble(Request.Form["Amount"]);
+                newExpense.Store = Request.Form["Store"];
+                newExpense.Category = Request.Form["cateoryCombo"];
+                newExpense.referenceNum = Request.Form["referenceNum"];
+                newExpense.Comment = Request.Form["Comment"];
+                newExpense.expDate = Convert.ToDateTime(Request.Form["expDate"]);
+                newExpense.EntryDate = DateTime.Now;
+                newExpense.groupID = ((Int32)(Session["gid"]));
+            }
+            catch (Exception)
+            {
+                ViewBag.addNewCExpenseError = "שדות חובה!";
+            }
+            ModelState.Clear();
+            TryValidateModel(newExpense);
             if (ModelState.IsValid)
             {
                 try
@@ -85,14 +92,17 @@ namespace RoommatesExpensesManager.Controllers
                     expDal.Expenses.Add(newExpense);
                     expDal.SaveChanges();
                 }
-                catch (DbUpdateException e)
+                catch (DbUpdateException)
                 {
-                    ViewBag.addNewCategoryError = e.InnerException.Message;
+                    ViewBag.addNewCExpenseError = "התרחשה שגיאה בהוספת ההוצאה!";
                 }
             }
-            List<Expense> expenses = expDal.Expenses.ToList<Expense>();
+            int gid = (int)Session["gid"];
+            List<Expense> expenseGroup = (from e in expDal.Expenses
+                                          where e.groupID == gid
+                                          select e).ToList<Expense>();
             Thread.Sleep(2000);
-            return Json(expenses, JsonRequestBehavior.AllowGet);
+            return Json(expenseGroup, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult GetCategoriesByJson()

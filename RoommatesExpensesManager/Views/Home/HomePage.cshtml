@@ -9,9 +9,12 @@
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 
 <div id="about">
-    <h2>ברוכים הבאים לאתר שלנו!!!</h2>
-    -----כאן יבואו תמונות ומלל על האתר ומה שהוא עושה-----
+    <h2>ניהול תקציב משותף</h2>
+    <h4>הפלטפורמה שתאפשר לכם לנהל את ההוצאות המשותפות בצורה יעילה</h4>
 </div>
+
+<br />
+
 <div id="loginForm">
     @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { Class = "form-group" }))
     {
@@ -38,3 +41,14 @@
     }
 </div>
 <div style="color:red">@TempData["notAuthorized"]</div>
+
+<br />
+<br />
+<br />
+
+<p>
+    <b>איך זה עובד? </b><br />
+    ראשית התחברו והצטרפו לקבוצת תשלום. <br />
+    כעת תוכלו לראות את הקבוצה בדף הבית שלכם, להוסיף אליה הוצאות ולצפות בהוצאות המשותפות. <br />
+    <b>אז למה אתם מחכים???</b>
+</p>

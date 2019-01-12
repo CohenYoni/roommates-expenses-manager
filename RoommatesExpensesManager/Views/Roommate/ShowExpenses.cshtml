@@ -18,14 +18,19 @@
                 <div style="color:red">@Html.ValidationMessageFor(x => x.Amount)</div>
             </td>
             <td>
-                <label>חנות</label>
+                <label>קטגוריה</label>
+                <select id="categoryDD" name="categoryCombo"></select>
+                <div style="color:red" id="loadStatuss"></div>
+            </td>
+            <td>
+                <label>מקום הקנייה</label>
                 @Html.TextBoxFor(m => m.Store, new { Class = "form-control" })
                 <div style="color:red">@Html.ValidationMessageFor(x => x.Store)</div>
             </td>
             <td>
-                <label>קטגוריה</label>
-                <select id="categoryDD" name="categoryCombo"></select>
-                <div style="color:red" id="loadStatuss"></div>
+                <label>תאריך תשלום</label>
+                @Html.TextBoxFor(m => m.expDate, new { Class = "form-control" })
+                <div style="color:red">@Html.ValidationMessageFor(x => x.expDate)</div>
             </td>
             <td>
                 <label>מספר אסמכתא</label>
@@ -37,17 +42,14 @@
                 @Html.TextBoxFor(m => m.Comment, new { Class = "form-control" })
                 <div style="color:red">@Html.ValidationMessageFor(x => x.Comment)</div>
             </td>
-            <td>
-                <label>תאריך תשלום</label>
-                @Html.TextBoxFor(m => m.expDate, new { Class = "form-control" })
-                <div style="color:red">@Html.ValidationMessageFor(x => x.expDate)</div>
-            </td>
         </tr>
     </table>
     <br />
     <input class="btn btn-primary" id="addExspense" type="button" onclick="SendNewExpenese()" value="הוספה" />
     <input class="btn btn-primary" id="addExspense" type="button" onclick="location.href='@Url.Action( "ShowRoommatePage","Roommate")'" value="סיום" />
 </form>
+
+<div style="color:red">@ViewBag.addNewCExpenseError</div>
 
 <script>
     var categoryDropDown = $('#categoryDD');
