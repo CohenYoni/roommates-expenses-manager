@@ -2,10 +2,9 @@
 @using RoommatesExpensesManager.Models
 
 @{
-    ViewBag.Title = "ShowRoommatePage";
+    ViewBag.Title = "ההוצאות שלי";
 }
 
-<h4>שלום @(((User)(Session["CurrentUser"])).FirstName)</h4>
+<h4 style="font-size:xx-large">שלום @(((User)(Session["CurrentUser"])).FirstName)</h4>
 
 @Html.Partial("ShowGroups", Model)
-

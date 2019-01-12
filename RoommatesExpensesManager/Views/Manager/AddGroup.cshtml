@@ -4,10 +4,30 @@
 <script src="~/Scripts/jquery.validate.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 
-@{
-    /**/
+<style>
+    .webgrid-header {
+        color: #FF0000;
+        background-color: #dcdcdc;
+    }
 
-    ViewBag.Title = "AddGroup";
+        .webgrid-header a {
+            direction: rtl;
+            color: #000000;
+            background-color: #dcdcdc;
+        }
+
+    .webgrid-row-style {
+        background-color: #FFFFFF;
+    }
+
+    .tbl {
+        background-color: #FFFFFF;
+    }
+
+</style>
+
+@{
+    ViewBag.Title = "הוספת קבוצה חדשה";
 }
 
 <h2>הוספת קבוצה חדשה</h2>
@@ -39,38 +59,18 @@
 }
 <br />
 
-<div style="color:red">@ViewBag.addNewGroupError</div>
-<div style="color:green">@ViewBag.addGroupSuccess</div>
-
-@*<table class="table">
-        <tr>
-            <td>מספר קבוצה</td>
-            <td>עיר</td>
-            <td>רחוב</td>
-            <td>מספר דירה</td>
-            <td>מנהל</td>
-        </tr>
-        @foreach (Group obj in Model.Groups)
-        {
-            <tr>
-                <td>@obj.gid</td>
-                <td>@obj.city</td>
-                <td>@obj.street</td>
-                <td>@obj.aptNum</td>
-                <td>@obj.managerUserName</td>
-            </tr>
-        }
-    </table>*@
+<div style="color:red; font-size:xx-large">@ViewBag.addNewGroupError</div>
+<div style="color:green; font-size:xx-large">@ViewBag.addGroupSuccess</div>
 
 @{
     WebGrid groups = new WebGrid(Model.Groups, rowsPerPage: 5);
 }
 @groups.GetHtml(
-    tableStyle: "table table-bordered table-responsive table-hover",
-    //headerStyle: "header",
-    //rowStyle: "row",
-    //footerStyle: "footer",
-    //alternatingRowStyle: "altRow",
+    tableStyle: "table table-bordered table-responsive table-hover tbl",
+    headerStyle: "webgrid-header",
+    footerStyle: "webgrid-footer",
+    rowStyle: "webgrid-row-style",
+    selectedRowStyle: "webgrid-selected-row",
     columns: groups.Columns(
         groups.Column("gid", "מספר קבוצה"),
         groups.Column("city", "עיר"),

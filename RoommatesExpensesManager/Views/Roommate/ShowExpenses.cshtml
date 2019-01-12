@@ -3,6 +3,18 @@
 <script src="~/Scripts/jquery-3.3.1.js"></script>
 <script src="~/Scripts/jquery.validate.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+<style>
+    .tbl {
+        background-color: #FFFFFF;
+    }
+
+    .headerTbl {
+        background-color: #dcdcdc;
+    }
+</style>
+
+
 @{
     ViewBag.Title = "הצגת הוצאות";
 }
@@ -19,7 +31,7 @@
             </td>
             <td>
                 <label>קטגוריה</label>
-                <select id="categoryDD" name="categoryCombo"></select>
+                <select id="categoryDD" name="categoryCombo" class="form-control"></select>
                 <div style="color:red" id="loadStatuss"></div>
             </td>
             <td>
@@ -29,8 +41,7 @@
             </td>
             <td>
                 <label>תאריך תשלום</label>
-                @Html.TextBoxFor(m => m.expDate, new { Class = "form-control" })
-                <div style="color:red">@Html.ValidationMessageFor(x => x.expDate)</div>
+                <input type="date" id="expDate" name="expDate" class="form-control">
             </td>
             <td>
                 <label>מספר אסמכתא</label>
@@ -64,20 +75,18 @@
     });
 </script>
 
-<h2>הוצאות קבוצה</h2>
+<h2>הוצאות הקבוצה</h2>
 <div style="color:red" id="loadStatus"></div>
-<table id="showExpensesTbl" class="table table-bordered table-responsive table-hover">
-    <tr>
-        <td>מזהה הוצאה</td>
-        <td>משתמש </td>
-        <td>סכום </td>
-        <td>חנות </td>
-        <td>קטגוריה </td>
-        <td>אסמכתא</td>
-        <td>תאריך תשלום </td>
+<table id="showExpensesTbl" class="table table-bordered table-responsive table-hover tbl">
+    <tr class="headerTbl">
         <td>תאריך הוספה </td>
+        <td>תאריך תשלום </td>
+        <td>שם שותף </td>
+        <td>קטגוריה </td>
+        <td>חנות </td>
+        <td>סכום </td>
+        <td>אסמכתא</td>
         <td>הערות </td>
-        <td>קבוצה </td>
     </tr>
 </table>
 
@@ -90,16 +99,14 @@
     var exspenseTable = $("#showExpensesTbl");
     for (i = 0; i < expenseGroup.length; i++) {
         var newRow = "<tr>" +
-        "<td>" + expenseGroup[i].eid + "</td>" +
-        "<td>" + expenseGroup[i].UserName + "</td>" +
-        "<td>" + expenseGroup[i].Amount + "</td>" +
-        "<td>" + expenseGroup[i].Store + "</td>" +
-        "<td>" + expenseGroup[i].Category + "</td>" +
-        "<td>" + expenseGroup[i].referenceNum + "</td>" +
-        "<td>" + new Date(parseInt(expenseGroup[i].expDate.substr(6))) + "</td>" +
         "<td>" + new Date(parseInt(expenseGroup[i].EntryDate.substr(6)))+ "</td>" +
+        "<td>" + new Date(parseInt(expenseGroup[i].expDate.substr(6))) + "</td>" +
+        "<td>" + expenseGroup[i].UserName + "</td>" +
+        "<td>" + expenseGroup[i].Category + "</td>" +
+        "<td>" + expenseGroup[i].Store + "</td>" +
+        "<td>" + expenseGroup[i].Amount + "</td>" +
+        "<td>" + expenseGroup[i].referenceNum + "</td>" +
         "<td>" + expenseGroup[i].Comment + "</td>" +
-        "<td>" + expenseGroup[i].groupID + "</td>" +
         "</tr>";
         exspenseTable.append(newRow);
     }

@@ -4,16 +4,26 @@
 <script src="~/Scripts/jquery.validate.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 
+<style>
+    .groupsTbl {
+        background-color: #FFFFFF;
+    }
+
+    .headerTbl {
+        background-color: #dcdcdc;
+    }
+</style>
+
 @{
-    ViewBag.Title = "ChooseUser";
+    ViewBag.Title = "הוספת משתמשים לקבוצה";
 }
 
 <h2>בחירת משתמש</h2>
 @{ TempData["VMUsersGroup"] = Model;}
 
-<div>פרטי קבוצה</div>
-<table class="table table-responsive table-hover">
-    <tr>
+<div style="font-size:x-large">פרטי קבוצה</div>
+<table class="table groupsTbl">
+    <tr class="headerTbl">
         <td><b>מספר קבוצה</b></td>
         <td><b>עיר</b></td>
         <td><b>רחוב</b></td>
@@ -27,14 +37,14 @@
     </tr>
 </table>
 
-<div>משתמשים רשומים שאינם בקבוצה</div>
+<div style="color:red; font-size:large">@ViewBag.erorAddUser</div>
 
-<div style="color:red; font-size:xx-large">@ViewBag.erorAddUser</div>
+<div style="font-size:x-large">משתמשים רשומים שאינם בקבוצה</div>
 
 @using (Html.BeginForm("SubmitChoosenUser", "Manager", FormMethod.Post))
 {
-    <table class="table table-bordered table-responsive table-hover">
-        <tr>
+    <table class="table table-bordered table-responsive table-hover groupsTbl">
+        <tr class="headerTbl">
             <td><b>שם משתמש</b></td>
             <td><b>שם פרטי</b></td>
             <td><b>שם משפחה</b></td>
@@ -51,5 +61,5 @@
             </tr>
         }
     </table>
-    <input id="send" type="submit" value="הוסף" />
+    <input id="send" class="btn btn-primary btn-lg" type="submit" value="הוסף" />
 }

@@ -14,6 +14,7 @@ namespace RoommatesExpensesManager.Controllers
     {
         public ActionResult RedirectByUser()
         {
+            //redirect to home page by the current user autorization
             if (Session["CurrentUser"] != null)
             {
                 User currentUsr = (User)(Session["CurrentUser"]);
@@ -31,6 +32,7 @@ namespace RoommatesExpensesManager.Controllers
 
         public ActionResult HomePage()
         {
+            //show the home page (with login)
             if (Session["CurrentUser"] != null)
                 return RedirectToAction("RedirectByUser");
             UserLogin usr = new UserLogin();
@@ -40,10 +42,13 @@ namespace RoommatesExpensesManager.Controllers
         [HttpPost]
         public ActionResult Login(UserLogin usr)
         {
+            //check if login successfully
+
             if (Session["CurrentUser"] != null)
                 return RedirectToAction("RedirectByUser");
             if (ModelState.IsValid)
             {
+                //get the user from DB
                 UserDal usrDal = new UserDal();
                 Encryption enc = new Encryption();
                 usr.UserName = usr.UserName.ToLower();
@@ -51,17 +56,21 @@ namespace RoommatesExpensesManager.Controllers
                                 where user.UserName == usr.UserName
                                 select user).FirstOrDefault<User>();
 
+                //validate
                 if (objUser == null || !enc.ValidatePassword(usr.Password, objUser.Password))
                 {
                     ViewBag.errorUserLogin = "המשתמש או הסיסמה שגויים";
                     return View("HomePage", usr);
                 }
+
+                //go to home page
                 objUser.Password = "";
                 Session["CurrentUser"] = objUser;
                 return RedirectToAction("RedirectByUser");
             }
             else
             {
+                //go back to login page
                 usr.Password = "";
                 return View("HomePage", usr);
             }
@@ -79,6 +88,8 @@ namespace RoommatesExpensesManager.Controllers
         [HttpPost]
         public ActionResult RegisterSubmit(VMUserRegister usr)
         {
+            //check if register successfully
+
             if (Session["CurrentUser"] != null)
                 return RedirectToAction("RedirectByUser");
             usr.NewUser.Password = usr.Password;
@@ -88,8 +99,8 @@ namespace RoommatesExpensesManager.Controllers
             TryValidateModel(usr.NewUser);
             if (ModelState.IsValid)
             {
+                //check if the username already exist
                 UserDal usrDal = new UserDal();
-
                 User objUser = (from user in usrDal.Users
                                 where user.UserName == usr.NewUser.UserName
                                 select user).FirstOrDefault<User>();
@@ -99,13 +110,10 @@ namespace RoommatesExpensesManager.Controllers
                     return View("Register", usr);
                 }
 
-
+                //encrypt the password
                 Encryption enc = new Encryption();
                 string hashedPassword = enc.CreateHash(usr.NewUser.Password);
                 usr.NewUser.Password = hashedPassword;
-                //ModelState.Clear();
-                //TryValidateModel(usr);
-                //TryValidateModel(usr.NewUser);
                 usrDal.Users.Add(usr.NewUser);
                 usrDal.SaveChanges();
                 ViewBag.registerSuccessMsg = "ההרשמה בוצעה בהצלחה!";
@@ -113,6 +121,7 @@ namespace RoommatesExpensesManager.Controllers
             }
             else
             {
+                //go back to registration page
                 usr.Password = "";
                 return View("Register", usr);
             }
@@ -120,6 +129,7 @@ namespace RoommatesExpensesManager.Controllers
 
         public ActionResult Logout()
         {
+            //logout. delete the session and go to home page
             if (Session["CurrentUser"] != null)
                 Session.Remove("CurrentUser");
             return RedirectToAction("HomePage");

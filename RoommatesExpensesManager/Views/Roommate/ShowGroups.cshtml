@@ -1,13 +1,26 @@
 ﻿@model RoommatesExpensesManager.ViewModel.VMGroups
 @using RoommatesExpensesManager.Models;
 
+<style>
+    .tbl {
+        background-color: #FFFFFF;
+    }
+
+    .headerTbl {
+        background-color: #dcdcdc;
+    }
+
+    .selectBtn {
+        color: #FF0000;
+    }
+</style>
 
 @using (Html.BeginForm("ShowExpense", "Roommate", FormMethod.Post))
 {
-    <span style="color:blue"> הקבוצות שלי:) </span>
+    <span style="color:blue; font-size:x-large"> הקבוצות שלי </span>
     <br />
-    <table class="table table-bordered table-responsive table-hover">
-        <tr>
+    <table class="table table-bordered table-responsive table-hover tbl">
+        <tr class="headerTbl">
             <td>  מזהה קבוצה  </td>
             <td>מנהל </td>
             <td>עיר </td>
@@ -23,8 +36,7 @@
                 <td>@obj.city </td>
                 <td>@obj.street </td>
                 <td>@obj.aptNum </td>
-                <td>@Html.ActionLink("צפיה בהוצאות הקבוצה", "ShowExpenses","Roommate",new { gid = @obj.gid },null)
-                                      </td>
+                <td>@Html.ActionLink("צפיה בהוצאות הקבוצה", "ShowExpenses","Roommate",new { gid = @obj.gid }, new { Class = "selectBtn" })</td>
             </tr>
         }
     </table>

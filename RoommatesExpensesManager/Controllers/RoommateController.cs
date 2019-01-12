@@ -15,6 +15,7 @@ namespace RoommatesExpensesManager.Controllers
     {
         private bool Authorize()
         {
+            //check if the user logged in
             if (Session["CurrentUser"] == null)
                 return false;
             else
@@ -23,9 +24,12 @@ namespace RoommatesExpensesManager.Controllers
 
         public ActionResult ShowRoommatePage()
         {
+            //show the home page of roommates
             if(!Authorize())
                 return RedirectToAction("RedirectByUser", "Home");
+            //remove gid from the session (added at showExpenses action)
             Session.Remove("gid");
+            //get the groups of the user from DB
             User u = (User)(Session["CurrentUser"]);
             GroupRoommateDal gdal = new GroupRoommateDal();
             List<int> gids = (from g in gdal.GroupsRoommates
@@ -41,6 +45,7 @@ namespace RoommatesExpensesManager.Controllers
 
         public ActionResult ShowExpenses(int gid)
         {
+            //show the expenses of the choosen group (asynchronous page)
             if (!Authorize())
                 return RedirectToAction("RedirectByUser", "Home");
             Expense exp = new Expense();
@@ -50,6 +55,7 @@ namespace RoommatesExpensesManager.Controllers
 
         public ActionResult GetExpensesByJson()
         {
+            //get json of all the expenses of the group
             if (!Authorize())
                 return RedirectToAction("RedirectByUser", "Home");
             int gid = (int)Session["gid"];
@@ -63,6 +69,7 @@ namespace RoommatesExpensesManager.Controllers
 
         public ActionResult SaveNewExpense()
         {
+            //save new expense in DB and return json of all expenses
             if (!Authorize())
                 return RedirectToAction("RedirectByUser", "Home");
             ExpenseDal expDal = new ExpenseDal();
@@ -72,7 +79,7 @@ namespace RoommatesExpensesManager.Controllers
                 newExpense.UserName = ((User)(Session["CurrentUser"])).UserName;
                 newExpense.Amount = Convert.ToDouble(Request.Form["Amount"]);
                 newExpense.Store = Request.Form["Store"];
-                newExpense.Category = Request.Form["cateoryCombo"];
+                newExpense.Category = Request.Form["categoryCombo"];
                 newExpense.referenceNum = Request.Form["referenceNum"];
                 newExpense.Comment = Request.Form["Comment"];
                 newExpense.expDate = Convert.ToDateTime(Request.Form["expDate"]);
@@ -87,6 +94,7 @@ namespace RoommatesExpensesManager.Controllers
             TryValidateModel(newExpense);
             if (ModelState.IsValid)
             {
+                //save the new expense
                 try
                 {
                     expDal.Expenses.Add(newExpense);
@@ -107,6 +115,7 @@ namespace RoommatesExpensesManager.Controllers
 
         public ActionResult GetCategoriesByJson()
         {
+            //get categories json (from manager controller)
             if (!Authorize())
                 return RedirectToAction("RedirectByUser", "Home");
             return RedirectToAction("GetCategoriesByJson", "Manager");

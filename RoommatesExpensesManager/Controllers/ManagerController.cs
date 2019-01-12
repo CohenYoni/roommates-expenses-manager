@@ -16,6 +16,7 @@ namespace RoommatesExpensesManager.Controllers
     {
         private bool Authorize()
         {
+            //check if the user logged in as manager
             if (Session["CurrentUser"] == null ||
                 (Session["CurrentUser"] != null && !((User)Session["CurrentUser"]).IsManager))
                 return false;
@@ -32,6 +33,8 @@ namespace RoommatesExpensesManager.Controllers
 
         public ActionResult AddGroup()
         {
+            //add new roommate groupaction
+
             if (!Authorize())
                 return RedirectToAction("RedirectByUser", "Home");
             GroupDal grpDal = new GroupDal();
@@ -45,6 +48,8 @@ namespace RoommatesExpensesManager.Controllers
 
         public ActionResult AddGroupSubmit([ModelBinder(typeof(GroupBinder))] Group grp)
         {
+            //add the new group to DB
+
             if (!Authorize())
                 return RedirectToAction("RedirectByUser", "Home");
             VMGroups groupsVM = new VMGroups();
@@ -58,6 +63,7 @@ namespace RoommatesExpensesManager.Controllers
                 try
                 {
                     grpDal.SaveChanges();
+                    //reset a new group object to view
                     groupsVM.Group = new Group();
                     GroupRoommate grpRmt = new GroupRoommate()
                     {
@@ -83,6 +89,7 @@ namespace RoommatesExpensesManager.Controllers
 
         public ActionResult AddCategory()
         {
+            //add new category action. (asynchronous page)
             if (!Authorize())
                 return RedirectToAction("RedirectByUser", "Home");
             Category ctgy = new Category();
@@ -91,6 +98,7 @@ namespace RoommatesExpensesManager.Controllers
 
         public ActionResult GetCategoriesByJson()
         {
+            //get json of all the categories from DB
             if (Session["CurrentUser"] == null)
                 return RedirectToAction("RedirectByUser", "Home");
             CategoryDal ctgyDal = new CategoryDal();
@@ -101,6 +109,7 @@ namespace RoommatesExpensesManager.Controllers
 
         public ActionResult SaveNewCategory()
         {
+            //save the new category
             if (!Authorize())
                 return RedirectToAction("RedirectByUser", "Home");
             CategoryDal ctgyDal = new CategoryDal();
@@ -119,7 +128,7 @@ namespace RoommatesExpensesManager.Controllers
                 }
                 catch (DbUpdateException)
                 {
-                    //show error message in client side
+                    //TODO: show error message in client side
                     ViewBag.addNewCategoryError = "התרחשה שגיאה בהוספת הקטגוריה";
                 }
             }
@@ -132,10 +141,12 @@ namespace RoommatesExpensesManager.Controllers
 
         public ActionResult AddUserToGroup()
         {
+            //add registered users to roommate groups of the current manager
             if (!Authorize())
                 return RedirectToAction("RedirectByUser", "Home");
             User u = (User)(Session["CurrentUser"]);
             GroupDal groupd = new GroupDal();
+            //get only the groups of the manager
             List<Group> MyGroups = (from g in groupd.Groups
                                     where g.managerUserName == u.UserName
                                     select g).ToList<Group>();
@@ -145,13 +156,16 @@ namespace RoommatesExpensesManager.Controllers
 
         public ActionResult ChooseUser(Group grp)
         {
+            //add users to choosen group
             if (!Authorize())
                 return RedirectToAction("RedirectByUser", "Home");
             User u = (User)(Session["CurrentUser"]);
+            //get the choosen group details
             GroupRoommateDal grpRmtDal = new GroupRoommateDal();
             List<string> userNamesAlreadyInGrp = (from usr in grpRmtDal.GroupsRoommates
                                                   where usr.groupID == grp.gid
                                                   select usr.userName).ToList<string>();
+            //get all the registered users except the current manager and the the users that already belongs to the group
             UserDal usrDal = new UserDal();
             List<User> usrs = (from usr in usrDal.Users
                                 where usr.UserName != u.UserName
@@ -167,6 +181,7 @@ namespace RoommatesExpensesManager.Controllers
 
         public ActionResult SubmitChoosenUser()
         {
+            //add the choosen users to DB
             if (!Authorize())
                 return RedirectToAction("RedirectByUser", "Home");
             VMUsersGroup vmUsrGrp = (VMUsersGroup)TempData["VMUsersGroup"];

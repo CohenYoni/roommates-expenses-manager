@@ -4,16 +4,30 @@
 <script src="~/Scripts/jquery.validate.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 
+<style>
+    .groupsTbl {
+        background-color: #FFFFFF;
+    }
+
+    .headerTbl {
+        background-color: #dcdcdc;
+    }
+
+    .selectBtn {
+        color: #FF0000;
+    }
+</style>
+
 @{
-    ViewBag.Title = "הוספת משתמש";
+    ViewBag.Title = "הוספת משתמשים לקבוצה";
 }
 
-<h2>הוספת משתמשים לקבוצה</h2>
+<h2>בחירת קבוצה</h2>
 
 @using (Html.BeginForm("ChooseUser", "Manager", FormMethod.Post))
 {
-    <table class="table table-bordered table-responsive table-hover">
-        <tr>
+    <table class="table table-bordered table-responsive table-hover groupsTbl">
+        <tr class="headerTbl">
             <td><b>מספר קבוצה</b></td>
             <td><b>עיר</b></td>
             <td><b>רחוב</b></td>
@@ -27,7 +41,7 @@
                 <td>@grp.street </td>
                 <td>@grp.aptNum </td>
                 <td>
-                    @Html.ActionLink("בחר", "ChooseUser", grp)
+                    @Html.ActionLink("בחר", "ChooseUser", grp, new { Class = "selectBtn" })
                 </td>
             </tr>
         }

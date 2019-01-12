@@ -26,6 +26,7 @@ namespace RoommatesExpensesManager.Classes
 
         private byte[] PBKDF2(string password, byte[] salt, int pbkdf2_itt, int outputBytes)
         {
+            //iterate the hash
             Rfc2898DeriveBytes pbkdf2 = new Rfc2898DeriveBytes(password, salt);
             pbkdf2.IterationCount = pbkdf2_itt;
             return pbkdf2.GetBytes(outputBytes);
@@ -33,6 +34,7 @@ namespace RoommatesExpensesManager.Classes
 
         private bool SlowEquals(byte[] dbHash, byte[] passHash)
         {
+            //check all the characters of the hash before returning false
             uint diff = (uint)dbHash.Length ^ (uint)passHash.Length;
             for (int i = 0; i < dbHash.Length && i < passHash.Length; i++)
                 diff |= (uint)dbHash[i] ^ (uint)passHash[i];
@@ -41,6 +43,7 @@ namespace RoommatesExpensesManager.Classes
 
         public bool ValidatePassword(string password, string dbHash)
         {
+            //validate the password by hash
             char[] delimiter = { ':' };
             string[] split = dbHash.Split(delimiter);
             byte[] salt = Convert.FromBase64String(split[0]);
