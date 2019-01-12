@@ -46,7 +46,7 @@ namespace RoommatesExpensesManager.Controllers
             {
                 UserDal usrDal = new UserDal();
                 Encryption enc = new Encryption();
-
+                usr.UserName = usr.UserName.ToLower();
                 User objUser = (from user in usrDal.Users
                                 where user.UserName == usr.UserName
                                 select user).FirstOrDefault<User>();
@@ -82,6 +82,7 @@ namespace RoommatesExpensesManager.Controllers
             if (Session["CurrentUser"] != null)
                 return RedirectToAction("RedirectByUser");
             usr.NewUser.Password = usr.Password;
+            usr.NewUser.UserName = usr.NewUser.UserName.ToLower();
             ModelState.Clear();
             TryValidateModel(usr);
             TryValidateModel(usr.NewUser);
@@ -102,9 +103,9 @@ namespace RoommatesExpensesManager.Controllers
                 Encryption enc = new Encryption();
                 string hashedPassword = enc.CreateHash(usr.NewUser.Password);
                 usr.NewUser.Password = hashedPassword;
-                ModelState.Clear();
+                //ModelState.Clear();
                 //TryValidateModel(usr);
-                TryValidateModel(usr.NewUser);
+                //TryValidateModel(usr.NewUser);
                 usrDal.Users.Add(usr.NewUser);
                 usrDal.SaveChanges();
                 ViewBag.registerSuccessMsg = "ההרשמה בוצעה בהצלחה!";
