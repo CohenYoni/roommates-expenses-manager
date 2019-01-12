@@ -1,19 +1,23 @@
 ﻿@model RoommatesExpensesManager.ViewModel.VMUsersGroup
 @using RoommatesExpensesManager.Models
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 
 @{
     ViewBag.Title = "ChooseUser";
 }
 
 <h2>בחירת משתמש</h2>
-@{ TempData["groupID"] = Model.group.gid;}
+@{ TempData["VMUsersGroup"] = Model;}
 
-<table class="table table-bordered table-responsive table-hover">
+<div>פרטי קבוצה</div>
+<table class="table table-responsive table-hover">
     <tr>
-        <td>מספר קבוצה</td>
-        <td>עיר</td>
-        <td>רחוב </td>
-        <td>מספר </td>
+        <td><b>מספר קבוצה</b></td>
+        <td><b>עיר</b></td>
+        <td><b>רחוב</b></td>
+        <td><b>מספר דירה</b></td>
     </tr>
     <tr>
         <td>@Model.group.gid</td>
@@ -23,15 +27,17 @@
     </tr>
 </table>
 
+<div>משתמשים רשומים שאינם בקבוצה</div>
+
 <div style="color:red; font-size:xx-large">@ViewBag.erorAddUser</div>
 
 @using (Html.BeginForm("SubmitChoosenUser", "Manager", FormMethod.Post))
 {
     <table class="table table-bordered table-responsive table-hover">
         <tr>
-            <td>שם משתמש</td>
-            <td>שם פרטי</td>
-            <td>שם משפחה</td>
+            <td><b>שם משתמש</b></td>
+            <td><b>שם פרטי</b></td>
+            <td><b>שם משפחה</b></td>
         </tr>
         @foreach (User usr in Model.users)
         {
@@ -41,7 +47,6 @@
                 <td>@usr.LastName </td>
                 <td>
                     <input type="checkbox" name="users[]" value="@usr.UserName" />
-                    @*@Html.CheckBoxFor(usr.UserName)*@
                 </td>
             </tr>
         }

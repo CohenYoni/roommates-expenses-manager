@@ -81,6 +81,7 @@ namespace RoommatesExpensesManager.Controllers
             usr.NewUser.Password = usr.Password;
             ModelState.Clear();
             TryValidateModel(usr);
+            TryValidateModel(usr.NewUser);
             if (ModelState.IsValid)
             {
                 UserDal usrDal = new UserDal();

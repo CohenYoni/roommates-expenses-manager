@@ -1,5 +1,8 @@
 ﻿@model RoommatesExpensesManager.ViewModel.VMGroups
 @using RoommatesExpensesManager.Models
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 
 @{
     ViewBag.Title = "הוספת משתמש";
@@ -11,10 +14,10 @@
 {
     <table class="table table-bordered table-responsive table-hover">
         <tr>
-            <td>מזהה קבוצה</td>
-            <td>עיר </td>
-            <td>רחוב </td>
-            <td>מספר </td>
+            <td><b>מספר קבוצה</b></td>
+            <td><b>עיר</b></td>
+            <td><b>רחוב</b></td>
+            <td><b>מספר</b></td>
         </tr>
         @foreach (Group grp in Model.Groups)
         {
@@ -26,7 +29,7 @@
                 <td>
                     @Html.ActionLink("בחר", "ChooseUser", grp)
                 </td>
-        </tr>
-    }
+            </tr>
+        }
     </table>
 }

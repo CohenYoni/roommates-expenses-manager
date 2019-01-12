@@ -10,8 +10,6 @@
 <h2>הוספת קטגוריה חדשה</h2>
 
 <form id="addCategoriesForm" class="form-group">
-@*@using (Html.BeginForm("addGroupSubmit", "Manager", FormMethod.Post, new { Class = "form-group", id = "addCategoriesForm" }))
-{*@
     <div>
         <label>קטגוריה (כגון מוצרי מזון, חשבון חשמל וכדו')</label>
         @Html.TextBoxFor(m => m.Type, new { Class = "form-control" })
@@ -20,18 +18,16 @@
     <br />
     <input class="btn btn-primary" id="addCategory" type="button" onclick="SendNewCategory()" value="הוספה" />
     <input class="btn btn-primary" id="addCategory" type="button" onclick="location.href='@Url.Action("ShowManagerPage", "Manager")'" value="סיום" />
-@*}*@
 </form>
 
 <div style="color:red" id="loadStatus"></div>
+<div id="addCategoryResult" style="color:red"></div>
 
 <table id="showCategoriesTbl">
     <tr>
-        <td><u><b>קטגוריות</b></u></td>
+        <td><u><b>קטגוריות קיימות</b></u></td>
     </tr>
 </table>
-
-<div style="color:red"> @TempData["addNewCategoryError"] </div>
 
 <script>
     $("#loadStatus").text("טוען קטגוריות... אנא המתן");
@@ -47,6 +43,7 @@
             categoriesTable.append(newRow);
         }
         $("#loadStatus").text("");
+        $("#addCategoryResult").text(@ViewBag.addNewCategoryError);
     }
 
     function SendNewCategory() {

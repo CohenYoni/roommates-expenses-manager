@@ -67,19 +67,16 @@ namespace RoommatesExpensesManager.Controllers
                     GroupRoommateDal grpRmtDal = new GroupRoommateDal();
                     grpRmtDal.GroupsRoommates.Add(grpRmt);
                     grpRmtDal.SaveChanges();
+                    ViewBag.addGroupSuccess = "הקבוצה התווספה בהצלחה!";
                 }
                 catch (DbUpdateException)
                 {
-                    //show error message in client side
-                    ViewBag.addNewCategoryError = "התרחשה שגיאה בהוספת הקבוצה";
+                    ViewBag.addNewGroupError = "התרחשה שגיאה בהוספת הקבוצה";
                     groupsVM.Group = grp;
                 }
             }
             else
-            {
-                //groupsVM.Group = newGroup;
                 groupsVM.Group = grp;
-            }
             groupsVM.Groups = grpDal.Groups.ToList<Group>();
             return View("AddGroup", groupsVM);
         }
@@ -111,6 +108,8 @@ namespace RoommatesExpensesManager.Controllers
             {
                 Type = Request.Form["Type"].ToString()
             };
+            ModelState.Clear();
+            TryValidateModel(newCategory);
             if (ModelState.IsValid)
             {
                 try
@@ -124,6 +123,8 @@ namespace RoommatesExpensesManager.Controllers
                     ViewBag.addNewCategoryError = "התרחשה שגיאה בהוספת הקטגוריה";
                 }
             }
+            else
+                ViewBag.addNewCategoryError = "הזן קטגוריה תקינה!";
             List<Category> categories = ctgyDal.Categories.ToList<Category>();
             Thread.Sleep(1000);
             return Json(categories, JsonRequestBehavior.AllowGet);
@@ -164,38 +165,30 @@ namespace RoommatesExpensesManager.Controllers
             return View(usrsGidVM);
         }
 
-        public ActionResult SubmitChoosenUser(VMUsersGroup vmUsrGrp)
+        public ActionResult SubmitChoosenUser()
         {
-            string usrs;
             if (!Authorize())
                 return RedirectToAction("RedirectByUser", "Home");
-            Int32 grpID = (Int32)TempData["groupID"];
-            if (Request.Form["users[]"] != null)
+            VMUsersGroup vmUsrGrp = (VMUsersGroup)TempData["VMUsersGroup"];
+            if (Request.Form["users[]"] == null)
             {
-                usrs = Request.Form["users[]"].ToString();
+                ViewBag.erorAddUser = "לא נבחר משתמש";
+                return View("ChooseUser", vmUsrGrp);
             }
-            else
-            {
-                ViewBag.erorAddUser = "לא התווסף משתמש";
-                GroupDal grpDal = new GroupDal();
-                Group grp = (from g in grpDal.Groups
-                             where g.gid == grpID
-                             select g).First<Group>();
-                return RedirectToAction("ChooseUser",grp);
-            }
+            string usrs = Request.Form["users[]"].ToString();
             List<string> userNames = usrs.Split(',').ToList<string>();
             GroupRoommateDal grpRmtDal = new GroupRoommateDal();
             foreach (string usrName in userNames)
                 {
                     GroupRoommate newRec = new GroupRoommate()
                     {
-                        groupID = grpID,
+                        groupID = vmUsrGrp.group.gid,
                         userName = usrName
                     };
                     grpRmtDal.GroupsRoommates.Add(newRec);
                 }
             grpRmtDal.SaveChanges();
-            //TODO: add success message
+            ViewBag.addUsersToGroupSuccess = "המשתמשים התווספו בהצלחה!";
             return View("ShowManagerPage");
         }
     }

@@ -4,6 +4,10 @@
     ViewBag.Title = "הרשמה";
 }
 
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
 <div id="registerForm">
     @using (Html.BeginForm("RegisterSubmit", "Home", FormMethod.Post, new { Class = "form-group" }))
     {
@@ -28,7 +32,7 @@
         <div>
             <label>שם פרטי</label>
             @Html.TextBoxFor(m => m.NewUser.FirstName, new { Class = "form-control" })
-            <div style="color:red">@Html.ValidationMessageFor(x => x.NewUser.LastName)</div>
+            <div style="color:red">@Html.ValidationMessageFor(x => x.NewUser.FirstName)</div>
         </div>
 
         <div>
