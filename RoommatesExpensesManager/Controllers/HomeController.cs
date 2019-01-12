@@ -1,4 +1,5 @@
-﻿using RoommatesExpensesManager.Dal;
+﻿using RoommatesExpensesManager.Classes;
+using RoommatesExpensesManager.Dal;
 using RoommatesExpensesManager.Models;
 using RoommatesExpensesManager.ViewModel;
 using System;
@@ -44,11 +45,13 @@ namespace RoommatesExpensesManager.Controllers
             if (ModelState.IsValid)
             {
                 UserDal usrDal = new UserDal();
+                Encryption enc = new Encryption();
 
                 User objUser = (from user in usrDal.Users
-                                       where user.UserName == usr.UserName
-                                       select user).FirstOrDefault<User>();
-                if (objUser == null || objUser.Password != usr.Password)
+                                where user.UserName == usr.UserName
+                                select user).FirstOrDefault<User>();
+
+                if (objUser == null || !enc.ValidatePassword(usr.Password, objUser.Password))
                 {
                     ViewBag.errorUserLogin = "המשתמש או הסיסמה שגויים";
                     return View("HomePage", usr);
@@ -94,6 +97,14 @@ namespace RoommatesExpensesManager.Controllers
                     ViewBag.errorUserRegister = "שם המשתמש שבחרת קיים";
                     return View("Register", usr);
                 }
+
+
+                Encryption enc = new Encryption();
+                string hashedPassword = enc.CreateHash(usr.NewUser.Password);
+                usr.NewUser.Password = hashedPassword;
+                ModelState.Clear();
+                //TryValidateModel(usr);
+                TryValidateModel(usr.NewUser);
                 usrDal.Users.Add(usr.NewUser);
                 usrDal.SaveChanges();
                 ViewBag.registerSuccessMsg = "ההרשמה בוצעה בהצלחה!";
