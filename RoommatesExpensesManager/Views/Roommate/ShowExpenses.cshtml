@@ -14,7 +14,6 @@
     }
 </style>
 
-
 @{
     ViewBag.Title = "הצגת הוצאות";
 }
@@ -25,9 +24,8 @@
     <table class="table" id="tableForm">
         <tr>
             <td>
-                <label>סכום</label>
-                @Html.TextBoxFor(m => m.Amount, new { Class = "form-control" })
-                <div style="color:red">@Html.ValidationMessageFor(x => x.Amount)</div>
+                <label>תאריך תשלום</label>
+                <input type="date" id="expDate" name="expDate" class="form-control">
             </td>
             <td>
                 <label>קטגוריה</label>
@@ -40,8 +38,9 @@
                 <div style="color:red">@Html.ValidationMessageFor(x => x.Store)</div>
             </td>
             <td>
-                <label>תאריך תשלום</label>
-                <input type="date" id="expDate" name="expDate" class="form-control">
+                <label>סכום</label>
+                @Html.TextBoxFor(m => m.Amount, new { Class = "form-control" })
+                <div style="color:red">@Html.ValidationMessageFor(x => x.Amount)</div>
             </td>
             <td>
                 <label>מספר אסמכתא</label>
@@ -97,17 +96,26 @@
     function BindDataToTable(expenseGroup) {
         $("#showExpensesTbl").find("tr:gt(0)").remove();
     var exspenseTable = $("#showExpensesTbl");
-    for (i = 0; i < expenseGroup.length; i++) {
-        var newRow = "<tr>" +
-        "<td>" + new Date(parseInt(expenseGroup[i].EntryDate.substr(6)))+ "</td>" +
-        "<td>" + new Date(parseInt(expenseGroup[i].expDate.substr(6))) + "</td>" +
-        "<td>" + expenseGroup[i].UserName + "</td>" +
-        "<td>" + expenseGroup[i].Category + "</td>" +
-        "<td>" + expenseGroup[i].Store + "</td>" +
-        "<td>" + expenseGroup[i].Amount + "</td>" +
-        "<td>" + expenseGroup[i].referenceNum + "</td>" +
-        "<td>" + expenseGroup[i].Comment + "</td>" +
-        "</tr>";
+        for (i = 0; i < expenseGroup.length; i++) {
+            var entryDate = new Date(parseInt(expenseGroup[i].EntryDate.substr(6)));
+            var expDate = new Date(parseInt(expenseGroup[i].expDate.substr(6)));
+            var entryDateStr = entryDate.getDate() + '/' +
+                (entryDate.getMonth() + 1) + '/' +
+                entryDate.getFullYear() + ' ' +
+                entryDate.toLocaleTimeString();
+            var expDateStr = expDate.getDate() + '/' +
+                (expDate.getMonth() + 1) + '/' +
+                expDate.getFullYear();
+            var newRow = "<tr>" +
+                "<td>" + entryDateStr + "</td>" +
+                "<td>" + expDateStr + "</td>" +
+                "<td>" + expenseGroup[i].UserName + "</td>" +
+                "<td>" + expenseGroup[i].Category + "</td>" +
+                "<td>" + expenseGroup[i].Store + "</td>" +
+                "<td>" + expenseGroup[i].Amount + "</td>" +
+                "<td>" + expenseGroup[i].referenceNum + "</td>" +
+                "<td>" + expenseGroup[i].Comment + "</td>" +
+                "</tr>";
         exspenseTable.append(newRow);
     }
     $("#loadStatus").text("");

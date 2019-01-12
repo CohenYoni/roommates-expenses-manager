@@ -17,7 +17,8 @@
 
 @using (Html.BeginForm("ShowExpense", "Roommate", FormMethod.Post))
 {
-    <span style="color:blue; font-size:x-large"> הקבוצות שלי </span>
+    <span style="font-size:xx-large"><b> הקבוצות שלי </b></span>
+    <br />
     <br />
     <table class="table table-bordered table-responsive table-hover tbl">
         <tr class="headerTbl">
@@ -26,7 +27,7 @@
             <td>עיר </td>
             <td>רחוב </td>
             <td>מספר </td>
-          
+
         </tr>
         @foreach (Group obj in Model.Groups)
         {
@@ -36,7 +37,7 @@
                 <td>@obj.city </td>
                 <td>@obj.street </td>
                 <td>@obj.aptNum </td>
-                <td>@Html.ActionLink("צפיה בהוצאות הקבוצה", "ShowExpenses","Roommate",new { gid = @obj.gid }, new { Class = "selectBtn" })</td>
+                <td>@Html.ActionLink("צפיה בהוצאות הקבוצה", "ShowExpenses", "Roommate", new { gid = @obj.gid }, new { Class = "selectBtn" })</td>
             </tr>
         }
     </table>
