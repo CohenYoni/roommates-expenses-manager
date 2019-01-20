@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @using RoommatesExpensesManager.Models
+    <link rel="icon" type="image/gif/png" href="/images/roommate.ico">
+    <style>
+        body {
+            background: url(/images/roommateBackgroung.png) no-repeat center center fixed;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body dir="rtl" style="font-size:large">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                @if (Session["CurrentUser"] != null)
+                {
+                    <span class="navbar-brand">@(((User)Session["CurrentUser"]).FirstName) @(((User)Session["CurrentUser"]).LastName)</span>
+                    @Html.ActionLink("התנתק", "Logout", "Home", null, new { @class = "navbar-brand" });
+                }
+                @Html.ActionLink("צור קשר", "ShowDetails", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("דף הבית", "HomePage", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+        </div>
+    </div>
+
+    <div class="container body-content">
+        <center>
+            @RenderBody()
+        </center>
+</div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -134,5 +134,10 @@ namespace RoommatesExpensesManager.Controllers
                 Session.Remove("CurrentUser");
             return RedirectToAction("HomePage");
         }
+
+        public ActionResult ShowDetails()
+        {
+            return View();
+        }
     }
 }
